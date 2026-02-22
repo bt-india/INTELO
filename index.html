@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRAVO TACTICAL INDIA | Intelligence Operator Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Barlow:wght@300;400;500;600&family=Dancing+Script:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080c09;
+  --dark: #0d1a10;
+  --panel: #111f14;
+  --card: #162019;
+  --border: #2a4a2e;
+  --green: #3d7a42;
+  --bright: #4eca55;
+  --acid: #a3ff6f;
+  --amber: #f5a623;
+  --red: #e03c31;
+  --text: #c8d8ca;
+  --muted: #5a7a5e;
+  --white: #eef5ef;
+  --gold: #c9a84c;
+  --scan: rgba(78,202,85,0.04);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* Scanline overlay */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  pointer-events:none;
+  z-index:9999;
+}
+
+/* Grid noise texture */
+body::after {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.3;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ===================== HEADER ===================== */
+header {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(8,12,9,0.96);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  padding: 0 20px;
+}
+
+.header-inner {
+  max-width:1400px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  height:64px;
+}
+
+.logo {
+  display:flex; align-items:center; gap:14px;
+}
+
+.logo-emblem {
+  width:44px; height:44px;
+  background: linear-gradient(135deg, var(--green), var(--bright));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display:flex; align-items:center; justify-content:center;
+  font-family: 'Oswald', sans-serif;
+  font-size:12px; font-weight:700; color:var(--black);
+  letter-spacing:1px;
+  position:relative;
+}
+
+.logo-emblem::after {
+  content:'BTI';
+}
+
+.logo-text {
+  display:flex; flex-direction:column;
+}
+
+.logo-title {
+  font-family:'Oswald', sans-serif;
+  font-size:16px; font-weight:700;
+  color:var(--bright); letter-spacing:3px;
+  text-transform:uppercase;
+}
+
+.logo-sub {
+  font-family:'Share Tech Mono', monospace;
+  font-size:9px; color:var(--muted); letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+.header-status {
+  display:flex; align-items:center; gap:20px;
+}
+
+.status-tag {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--muted); letter-spacing:2px;
+  border:1px solid var(--border); padding:4px 10px;
+  display:flex; align-items:center; gap:6px;
+}
+
+.status-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--bright);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; }
+  50% { opacity:0.3; }
+}
+
+.progress-bar-header {
+  display:flex; flex-direction:column; align-items:flex-end; gap:4px;
+}
+
+.progress-label {
+  font-family:'Share Tech Mono', monospace;
+  font-size:9px; color:var(--muted); letter-spacing:1px;
+}
+
+.progress-track {
+  width:160px; height:4px;
+  background:var(--dark); border:1px solid var(--border);
+  position:relative; overflow:hidden;
+}
+
+.progress-fill {
+  height:100%; background:linear-gradient(90deg, var(--green), var(--acid));
+  width:0%; transition:width 0.8s ease;
+}
+
+/* ===================== HERO ===================== */
+.hero {
+  min-height:100vh;
+  display:flex; align-items:center;
+  position:relative;
+  padding:100px 20px 60px;
+  overflow:hidden;
+}
+
+.hero-bg {
+  position:absolute; inset:0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(61,122,66,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(78,202,85,0.06) 0%, transparent 50%),
+    linear-gradient(180deg, var(--black) 0%, var(--dark) 50%, var(--black) 100%);
+}
+
+.hero-grid {
+  position:absolute; inset:0;
+  background-image: 
+    linear-gradient(rgba(61,122,66,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,122,66,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { background-position:0 0; }
+  100% { background-position:40px 40px; }
+}
+
+.hero-inner {
+  max-width:1400px; margin:0 auto;
+  position:relative; z-index:2;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+}
+
+.hero-left { }
+
+.classification-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid var(--red); padding:6px 16px;
+  font-family:'Oswald', sans-serif; font-size:11px; font-weight:700;
+  color:var(--red); letter-spacing:4px; text-transform:uppercase;
+  margin-bottom:24px;
+  animation: classFlicker 4s infinite;
+}
+
+@keyframes classFlicker {
+  0%,96%,100% { opacity:1; }
+  97% { opacity:0.4; }
+  98% { opacity:1; }
+  99% { opacity:0.3; }
+}
+
+.hero-title {
+  font-family:'Oswald', sans-serif;
+  font-size:clamp(36px,6vw,72px);
+  font-weight:700; line-height:0.95;
+  text-transform:uppercase;
+  color:var(--white);
+  margin-bottom:8px;
+}
+
+.hero-title span {
+  display:block;
+  background: linear-gradient(135deg, var(--bright), var(--acid));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-subtitle {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:clamp(16px,2.5vw,22px); font-weight:300;
+  color:var(--muted); letter-spacing:4px; text-transform:uppercase;
+  margin-bottom:32px;
+}
+
+.hero-desc {
+  font-size:15px; line-height:1.8; color:var(--text);
+  max-width:520px; margin-bottom:40px;
+  border-left:2px solid var(--green); padding-left:20px;
+}
+
+.hero-cta {
+  display:flex; gap:16px; flex-wrap:wrap;
+}
+
+.btn-primary {
+  background:linear-gradient(135deg, var(--green), var(--bright));
+  color:var(--black); border:none;
+  padding:14px 36px;
+  font-family:'Oswald', sans-serif; font-size:15px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  cursor:pointer; transition:all 0.2s;
+}
+
+.btn-primary:hover {
+  background:linear-gradient(135deg, var(--bright), var(--acid));
+  transform: translateY(-2px);
+  box-shadow:0 8px 24px rgba(78,202,85,0.3);
+}
+
+.btn-secondary {
+  background:transparent;
+  color:var(--bright); 
+  border:1px solid var(--bright);
+  padding:14px 36px;
+  font-family:'Oswald', sans-serif; font-size:15px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  cursor:pointer; transition:all 0.2s;
+}
+
+.btn-secondary:hover {
+  background:rgba(78,202,85,0.1);
+}
+
+.hero-right {
+  display:flex; flex-direction:column; gap:16px;
+}
+
+.intel-panel {
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+
+.intel-panel::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--bright), transparent);
+  animation: scanH 3s ease-in-out infinite;
+}
+
+@keyframes scanH {
+  0%,100% { opacity:0; transform:scaleX(0); }
+  50% { opacity:1; transform:scaleX(1); }
+}
+
+.panel-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+
+.panel-title {
+  font-family:'Share Tech Mono', monospace;
+  font-size:11px; color:var(--bright); letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+.panel-code {
+  font-family:'Share Tech Mono', monospace;
+  font-size:9px; color:var(--muted);
+}
+
+.stat-grid {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:12px;
+}
+
+.stat-item {
+  background:var(--dark); padding:14px;
+  border:1px solid rgba(61,122,66,0.2);
+}
+
+.stat-num {
+  font-family:'Oswald', sans-serif;
+  font-size:28px; font-weight:700;
+  color:var(--bright); line-height:1;
+}
+
+.stat-label {
+  font-family:'Share Tech Mono', monospace;
+  font-size:9px; color:var(--muted); letter-spacing:1px;
+  text-transform:uppercase; margin-top:4px;
+}
+
+/* ===================== SECTIONS ===================== */
+section {
+  position:relative; z-index:1;
+  padding:80px 20px;
+}
+
+.container { max-width:1400px; margin:0 auto; }
+
+.section-header {
+  margin-bottom:48px;
+}
+
+.section-tag {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--muted); letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:12px;
+  display:flex; align-items:center; gap:10px;
+}
+
+.section-tag::before {
+  content:''; display:block;
+  width:20px; height:1px; background:var(--green);
+}
+
+.section-title {
+  font-family:'Oswald', sans-serif;
+  font-size:clamp(28px,4vw,48px); font-weight:700;
+  text-transform:uppercase; color:var(--white);
+  line-height:1;
+}
+
+.section-title .accent { color:var(--bright); }
+
+/* ===================== MODULE GRID ===================== */
+.modules-section {
+  background:var(--dark);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+.module-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:2px;
+}
+
+.module-card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:28px;
+  cursor:pointer;
+  transition:all 0.2s;
+  position:relative;
+  overflow:hidden;
+}
+
+.module-card:hover {
+  border-color:var(--bright);
+  background:var(--card);
+}
+
+.module-card:hover .module-num { color:var(--acid); }
+
+.module-card.completed {
+  border-left:3px solid var(--bright);
+}
+
+.module-card.locked {
+  opacity:0.5;
+  cursor:not-allowed;
+}
+
+.module-num {
+  font-family:'Oswald', sans-serif;
+  font-size:48px; font-weight:700;
+  color:var(--border); line-height:1;
+  margin-bottom:8px;
+  transition:color 0.2s;
+}
+
+.module-name {
+  font-family:'Oswald', sans-serif;
+  font-size:18px; font-weight:600;
+  color:var(--white); text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:8px;
+}
+
+.module-desc {
+  font-size:13px; color:var(--muted); line-height:1.6;
+  margin-bottom:16px;
+}
+
+.module-meta {
+  display:flex; align-items:center; justify-content:space-between;
+}
+
+.module-time {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--muted); letter-spacing:1px;
+}
+
+.module-status {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; letter-spacing:1px;
+  padding:3px 8px; border:1px solid;
+}
+
+.status-pending { color:var(--muted); border-color:var(--border); }
+.status-done { color:var(--bright); border-color:var(--bright); }
+.status-locked { color:var(--muted); border-color:var(--border); }
+
+/* ===================== CONTENT MODAL ===================== */
+.modal-overlay {
+  position:fixed; inset:0; z-index:2000;
+  background:rgba(0,0,0,0.92);
+  display:none; align-items:flex-start; justify-content:center;
+  overflow-y:auto; padding:80px 20px 40px;
+}
+
+.modal-overlay.open { display:flex; }
+
+.modal-box {
+  background:var(--dark);
+  border:1px solid var(--border);
+  width:100%; max-width:900px;
+  position:relative;
+  animation:modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.modal-header {
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  padding:20px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:10;
+}
+
+.modal-title-wrap { }
+
+.modal-code {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--muted); letter-spacing:2px;
+}
+
+.modal-title {
+  font-family:'Oswald', sans-serif;
+  font-size:22px; font-weight:700;
+  color:var(--bright); text-transform:uppercase;
+  letter-spacing:2px;
+}
+
+.modal-close {
+  background:none; border:1px solid var(--border);
+  color:var(--muted); width:36px; height:36px;
+  font-size:18px; cursor:pointer; transition:all 0.2s;
+  font-family:'Share Tech Mono', monospace;
+}
+
+.modal-close:hover { border-color:var(--red); color:var(--red); }
+
+.modal-body {
+  padding:36px 40px;
+}
+
+.content-section {
+  margin-bottom:36px;
+  padding-bottom:36px;
+  border-bottom:1px solid var(--border);
+}
+
+.content-section:last-of-type { border-bottom:none; }
+
+.content-h2 {
+  font-family:'Oswald', sans-serif;
+  font-size:20px; font-weight:700;
+  color:var(--acid); text-transform:uppercase;
+  letter-spacing:2px; margin-bottom:16px;
+  display:flex; align-items:center; gap:10px;
+}
+
+.content-h2::before {
+  content:'▶'; font-size:10px; color:var(--green);
+}
+
+.content-h3 {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:16px; font-weight:600;
+  color:var(--bright); text-transform:uppercase;
+  letter-spacing:2px; margin-bottom:10px; margin-top:20px;
+}
+
+.content-p {
+  font-size:14px; line-height:1.9; color:var(--text);
+  margin-bottom:14px;
+}
+
+.intel-box {
+  background:rgba(61,122,66,0.08);
+  border:1px solid rgba(78,202,85,0.2);
+  border-left:3px solid var(--bright);
+  padding:16px 20px; margin:20px 0;
+}
+
+.intel-box-title {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--bright); letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:8px;
+}
+
+.intel-box p {
+  font-size:13px; color:var(--text); line-height:1.7;
+}
+
+.warning-box {
+  background:rgba(224,60,49,0.08);
+  border:1px solid rgba(224,60,49,0.3);
+  border-left:3px solid var(--red);
+  padding:16px 20px; margin:20px 0;
+}
+
+.warning-box-title {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--red); letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:8px;
+}
+
+.content-list {
+  list-style:none; padding:0;
+}
+
+.content-list li {
+  padding:8px 0 8px 24px;
+  border-bottom:1px solid rgba(61,122,66,0.1);
+  font-size:14px; color:var(--text); line-height:1.7;
+  position:relative;
+}
+
+.content-list li::before {
+  content:'◆'; position:absolute; left:0;
+  color:var(--green); font-size:8px; top:12px;
+}
+
+.intel-table {
+  width:100%; border-collapse:collapse; margin:20px 0;
+}
+
+.intel-table th {
+  background:var(--panel);
+  font-family:'Oswald', sans-serif; font-size:12px;
+  font-weight:600; color:var(--bright); letter-spacing:2px;
+  text-transform:uppercase; text-align:left;
+  padding:10px 14px; border:1px solid var(--border);
+}
+
+.intel-table td {
+  padding:10px 14px; border:1px solid var(--border);
+  font-size:13px; color:var(--text); line-height:1.6;
+}
+
+.intel-table tr:hover td { background:rgba(61,122,66,0.05); }
+
+/* ===================== QUIZ SECTION ===================== */
+.quiz-section {
+  margin-top:20px;
+  border-top:2px solid var(--border);
+  padding-top:28px;
+}
+
+.quiz-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:24px;
+}
+
+.quiz-title {
+  font-family:'Oswald', sans-serif;
+  font-size:18px; font-weight:700;
+  color:var(--amber); text-transform:uppercase; letter-spacing:2px;
+}
+
+.quiz-score-display {
+  font-family:'Share Tech Mono', monospace;
+  font-size:12px; color:var(--muted);
+}
+
+.question-block {
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:24px; margin-bottom:20px;
+}
+
+.question-num {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--muted); letter-spacing:2px;
+  margin-bottom:10px;
+}
+
+.question-text {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:18px; font-weight:600;
+  color:var(--white); margin-bottom:18px;
+  line-height:1.4;
+}
+
+.options-grid {
+  display:flex; flex-direction:column; gap:8px;
+}
+
+.option-btn {
+  background:var(--dark);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:12px 16px; text-align:left;
+  font-family:'Barlow', sans-serif; font-size:14px;
+  cursor:pointer; transition:all 0.2s;
+  display:flex; align-items:center; gap:12px;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color:var(--green); background:rgba(61,122,66,0.1);
+  color:var(--white);
+}
+
+.option-btn.selected { border-color:var(--amber); background:rgba(245,166,35,0.08); color:var(--amber); }
+.option-btn.correct { border-color:var(--bright); background:rgba(78,202,85,0.1); color:var(--bright); }
+.option-btn.wrong { border-color:var(--red); background:rgba(224,60,49,0.1); color:var(--red); }
+.option-btn:disabled { cursor:default; }
+
+.option-letter {
+  font-family:'Oswald', sans-serif;
+  font-size:12px; font-weight:700;
+  width:24px; height:24px;
+  background:var(--border); color:var(--muted);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; letter-spacing:0;
+}
+
+.explanation-box {
+  margin-top:10px; padding:12px 16px;
+  font-size:13px; line-height:1.7; color:var(--text);
+  border-left:2px solid var(--green);
+  background:rgba(61,122,66,0.05);
+  display:none;
+}
+
+.quiz-submit-btn {
+  background:linear-gradient(135deg, var(--amber), #d4880a);
+  color:var(--black); border:none;
+  padding:14px 40px;
+  font-family:'Oswald', sans-serif; font-size:15px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s;
+  margin-top:16px;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.quiz-submit-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(245,166,35,0.3); }
+
+.quiz-result-box {
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:32px; text-align:center;
+  display:none;
+}
+
+.result-score-big {
+  font-family:'Oswald', sans-serif;
+  font-size:72px; font-weight:700;
+  line-height:1; margin-bottom:8px;
+}
+
+.result-score-big.pass { color:var(--bright); }
+.result-score-big.fail { color:var(--red); }
+
+.result-label {
+  font-family:'Share Tech Mono', monospace;
+  font-size:14px; letter-spacing:3px;
+  text-transform:uppercase;
+}
+
+.result-label.pass { color:var(--bright); }
+.result-label.fail { color:var(--red); }
+
+.result-message {
+  font-size:15px; color:var(--text); margin-top:16px;
+  line-height:1.7; max-width:500px; margin-left:auto; margin-right:auto;
+}
+
+.result-actions {
+  display:flex; justify-content:center; gap:16px; margin-top:24px;
+}
+
+/* ===================== CERTIFICATE ===================== */
+.cert-section { background:var(--black); border-top:1px solid var(--border); }
+
+/* ── Verification Section ── */
+.verify-section {
+  background:var(--dark); border-top:1px solid var(--border);
+  padding:80px 0;
+}
+.verify-form-wrap {
+  max-width:600px; margin:0 auto;
+  background:var(--panel); border:1px solid var(--border);
+  padding:40px;
+}
+.verify-input {
+  width:100%; background:var(--dark); border:1px solid var(--border);
+  color:var(--white); padding:14px 18px;
+  font-family:'Share Tech Mono',monospace; font-size:15px;
+  letter-spacing:3px; text-transform:uppercase; outline:none;
+  transition:border-color 0.2s; margin-bottom:12px;
+}
+.verify-input:focus { border-color:var(--bright); }
+.verify-input::placeholder { color:var(--muted); letter-spacing:1px; font-size:12px; text-transform:none; }
+.verify-result {
+  margin-top:20px; padding:18px 20px; display:none;
+  border-left:4px solid var(--bright);
+  background:rgba(78,202,85,0.06);
+  font-family:'Share Tech Mono',monospace; font-size:11px;
+  letter-spacing:1px; line-height:2;
+}
+.verify-result.fail {
+  border-left-color:var(--red);
+  background:rgba(224,60,49,0.06);
+  color:var(--red);
+}
+.verify-result.pass { color:var(--bright); }
+.verify-result strong { color:var(--white); }
+
+.cert-input-form {
+  background:var(--panel); border:1px solid var(--border);
+  padding:40px; max-width:600px; margin:0 auto;
+  display:none;
+}
+
+.cert-input-form.active { display:block; }
+
+.form-group { margin-bottom:20px; }
+
+.form-label {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--muted); letter-spacing:2px;
+  text-transform:uppercase; display:block; margin-bottom:8px;
+}
+
+.form-input {
+  width:100%; background:var(--dark);
+  border:1px solid var(--border);
+  color:var(--white); padding:12px 16px;
+  font-family:'Barlow', sans-serif; font-size:14px;
+  outline:none; transition:border-color 0.2s;
+}
+
+.form-input:focus { border-color:var(--bright); }
+.form-input::placeholder { color:var(--muted); }
+
+/* Certificate Design */
+.certificate-wrapper {
+  display:none; max-width:900px; margin:0 auto;
+}
+
+.certificate-wrapper.show { display:block; }
+
+.certificate {
+  background: linear-gradient(150deg, #0c1e10 0%, #122818 40%, #0e2214 70%, #0c1e10 100%);
+  border:5px double #c9a84c;
+  padding:52px 60px;
+  position:relative;
+  font-family:'Barlow', sans-serif;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(0,0,0,0.8), inset 0 0 60px rgba(0,0,0,0.3);
+}
+
+/* Inner decorative border */
+.certificate::after {
+  content:'';
+  position:absolute; inset:12px;
+  border:1px solid rgba(201,168,76,0.2);
+  pointer-events:none;
+}
+
+.cert-corner {
+  position:absolute; width:56px; height:56px;
+  border-color:#c9a84c; border-style:solid;
+  z-index:2;
+}
+.cert-corner.tl { top:20px; left:20px; border-width:2px 0 0 2px; }
+.cert-corner.tr { top:20px; right:20px; border-width:2px 2px 0 0; }
+.cert-corner.bl { bottom:20px; left:20px; border-width:0 0 2px 2px; }
+.cert-corner.br { bottom:20px; right:20px; border-width:0 2px 2px 0; }
+
+/* Corner inner dots */
+.cert-corner::before {
+  content:'◆'; position:absolute;
+  font-size:6px; color:#c9a84c;
+}
+.cert-corner.tl::before { bottom:-4px; right:-4px; }
+.cert-corner.tr::before { bottom:-4px; left:-4px; }
+.cert-corner.bl::before { top:-4px; right:-4px; }
+.cert-corner.br::before { top:-4px; left:-4px; }
+
+.cert-watermark {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0.03;
+  font-family:'Oswald', sans-serif;
+  font-size:200px; font-weight:700;
+  color:#c9a84c; pointer-events:none;
+  text-transform:uppercase;
+  transform:rotate(-25deg);
+  letter-spacing:20px;
+}
+
+.cert-header { text-align:center; margin-bottom:24px; }
+
+.cert-issuer {
+  font-family:'Oswald', sans-serif;
+  font-size:28px; font-weight:700;
+  color:#c9a84c; letter-spacing:8px;
+  text-transform:uppercase;
+  text-shadow:0 0 30px rgba(201,168,76,0.3);
+}
+
+.cert-issued-by {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:#7a9a7e; letter-spacing:4px;
+  text-transform:uppercase; margin-top:6px;
+}
+
+.cert-divider {
+  height:1px;
+  background:linear-gradient(90deg, transparent, #c9a84c 20%, #e8c96a 50%, #c9a84c 80%, transparent);
+  margin:20px 0; opacity:0.7;
+}
+
+.cert-title-label {
+  text-align:center;
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:#7a9a7e; letter-spacing:4px;
+  text-transform:uppercase; margin-bottom:10px;
+}
+
+.cert-main-title {
+  text-align:center;
+  font-family:'Oswald', sans-serif;
+  font-size:42px; font-weight:700;
+  color:#f0e8d0;
+  text-transform:uppercase;
+  letter-spacing:5px; margin:0 0 6px;
+  line-height:1.1;
+  text-shadow:0 2px 8px rgba(0,0,0,0.5), 0 0 20px rgba(201,168,76,0.1);
+}
+
+.cert-body { text-align:center; margin:0; }
+
+.cert-body p {
+  font-size:14px; color:#b8ccba; line-height:2.0;
+}
+
+.cert-name {
+  font-family:'Oswald', sans-serif;
+  font-size:40px; font-weight:700;
+  color:#c9a84c; letter-spacing:3px;
+  display:block; margin:8px 0;
+  text-transform:uppercase;
+}
+
+.cert-designation {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:17px; color:#5ec466;
+  letter-spacing:4px; text-transform:uppercase;
+  margin:4px 0 6px; font-weight:600;
+}
+
+.cert-unit {
+  font-family:'Share Tech Mono', monospace;
+  font-size:12px; color:#8aaa8e;
+  letter-spacing:3px;
+  border:1px solid rgba(201,168,76,0.2);
+  padding:4px 16px; display:inline-block;
+  margin-top:4px;
+}
+
+.cert-footer {
+  display:flex; flex-direction:column;
+  align-items:center; gap:0px; margin-top:32px;
+}
+
+.cert-footer-row {
+  display:grid; grid-template-columns:1fr auto 1fr;
+  align-items:end; gap:32px; width:100%;
+}
+
+/* Signature styling */
+.cert-signature-block { text-align:center; }
+
+.cert-signature-svg {
+  display:block; margin:0 auto 2px;
+  width:180px; height:56px;
+}
+
+.cert-signature-name {
+  font-family:'Great Vibes', cursive;
+  font-size:42px;
+  color:var(--gold);
+  line-height:1;
+  margin-bottom:2px;
+  /* subtle ink-pen tilt */
+  transform:rotate(-2deg);
+  display:inline-block;
+  text-shadow:1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.cert-sign-line {
+  height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:6px 0 6px;
+}
+
+.cert-sign-label {
+  font-family:'Share Tech Mono', monospace;
+  font-size:9px; color:var(--muted); letter-spacing:2px;
+  text-transform:uppercase; line-height:1.7;
+}
+
+/* Seal */
+.cert-seal {
+  width:100px; height:100px;
+  border:3px solid var(--gold);
+  border-radius:50%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background:radial-gradient(circle, rgba(201,168,76,0.12), transparent);
+  margin:0 auto;
+  position:relative;
+  flex-shrink:0;
+}
+
+.cert-seal::before {
+  content:'';
+  position:absolute; inset:5px;
+  border:1px solid rgba(201,168,76,0.35);
+  border-radius:50%;
+}
+
+.cert-seal-text {
+  font-family:'Oswald', sans-serif;
+  font-size:8px; font-weight:700;
+  color:var(--gold); letter-spacing:1px;
+  text-align:center; text-transform:uppercase;
+  line-height:1.5;
+}
+
+/* Timestamp block (right of footer) */
+.cert-timestamp-block { text-align:center; }
+
+.cert-timestamp-label {
+  font-family:'Share Tech Mono', monospace;
+  font-size:9px; color:var(--muted); letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:4px;
+}
+
+.cert-timestamp-date {
+  font-family:'Share Tech Mono', monospace;
+  font-size:12px; color:var(--gold); letter-spacing:1px;
+  margin-bottom:2px;
+}
+
+.cert-timestamp-time {
+  font-family:'Share Tech Mono', monospace;
+  font-size:11px; color:var(--text); letter-spacing:1px;
+  opacity:0.8;
+}
+
+/* ID block */
+.cert-id-block {
+  margin-top:20px; text-align:center; width:100%;
+  background:rgba(0,0,0,0.3); padding:10px 12px;
+  border:1px solid rgba(201,168,76,0.2);
+  display:flex; align-items:center; justify-content:center; gap:24px;
+}
+
+.cert-id-label {
+  font-family:'Share Tech Mono', monospace;
+  font-size:9px; color:var(--muted); letter-spacing:2px; margin-bottom:2px;
+}
+
+.cert-id-value {
+  font-family:'Share Tech Mono', monospace;
+  font-size:14px; color:var(--gold); letter-spacing:3px;
+}
+
+.cert-print-btn {
+  background:linear-gradient(135deg, var(--gold), #a07a20);
+  color:var(--black); border:none;
+  padding:14px 40px; margin:24px auto; display:block;
+  font-family:'Oswald', sans-serif; font-size:15px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s;
+}
+
+/* ===================== PRINT — CERTIFICATE ONLY ===================== */
+@media print {
+  * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  body { background:#fff !important; margin:0 !important; padding:0 !important; }
+  body > *                          { display:none !important; }
+  .cert-section                     { display:block !important; }
+  .cert-section .container          { padding:0 !important; max-width:100% !important; }
+  .section-header, .cert-input-form,
+  .cert-print-btn, .verify-section,
+  header, footer, .hero, .modules-section,
+  .overall-progress-section, .final-exam-section,
+  .modal-overlay, body::before, body::after { display:none !important; }
+  .certificate-wrapper { display:block !important; max-width:100% !important; margin:0 !important; }
+
+  /* ── Certificate print override — cream/ivory theme ── */
+  .certificate {
+    background: linear-gradient(150deg,#f8f4ea 0%,#fffdf6 50%,#f8f4ea 100%) !important;
+    border:4px double #8b6914 !important;
+    min-height:100vh !important; margin:0 !important;
+    padding:52px 64px !important;
+    box-shadow:none !important;
+  }
+  .certificate::after { border-color:rgba(139,105,20,0.25) !important; }
+  .cert-corner        { border-color:#8b6914 !important; }
+  .cert-corner::before{ color:#8b6914 !important; }
+  .cert-watermark     { color:#8b6914 !important; opacity:0.05 !important; }
+
+  .cert-issuer        { color:#6b4f10 !important; text-shadow:none !important; }
+  .cert-issued-by     { color:#7a6a40 !important; }
+  .cert-divider       { background:#8b6914 !important; opacity:1 !important; }
+  .cert-title-label   { color:#7a6a40 !important; }
+  .cert-main-title    { color:#1a1a1a !important; text-shadow:none !important; }
+  .cert-designation   { color:#2a6e30 !important; }
+  .cert-unit          { color:#3a3a3a !important; border-color:rgba(139,105,20,0.3) !important; }
+
+  .cert-body p        { color:#2a2a2a !important; }
+  .cert-body strong   { color:#6b4f10 !important; }
+  .cert-body em, .cert-body strong[style]{ color:#2a6e30 !important; }
+
+  .cert-signature-name{ color:#6b4f10 !important; text-shadow:none !important; }
+  .cert-sign-line     { background:#8b6914 !important; }
+  .cert-sign-label    { color:#555 !important; }
+
+  .cert-seal          { border-color:#8b6914 !important; background:transparent !important; }
+  .cert-seal::before  { border-color:rgba(139,105,20,0.3) !important; }
+  .cert-seal-text     { color:#6b4f10 !important; }
+
+  .cert-timestamp-label { color:#555 !important; }
+  .cert-timestamp-date  { color:#6b4f10 !important; }
+  .cert-timestamp-time  { color:#3a3a3a !important; opacity:1 !important; }
+
+  .cert-id-block      { background:#f0ead8 !important; border-color:#c9a84c !important; }
+  .cert-id-label      { color:#555 !important; }
+  .cert-id-value      { color:#6b4f10 !important; }
+}
+
+/* ===================== INTELLIGENCE CYCLE VISUAL ===================== */
+.cycle-visual {
+  display:grid; grid-template-columns:repeat(6,1fr); gap:2px;
+  margin:24px 0;
+}
+
+.cycle-step {
+  background:var(--panel); border:1px solid var(--border);
+  padding:16px 12px; text-align:center;
+  position:relative;
+}
+
+.cycle-step:not(:last-child)::after {
+  content:'→'; position:absolute; right:-12px; top:50%;
+  transform:translateY(-50%); z-index:2;
+  color:var(--green); font-size:14px;
+}
+
+.cycle-num {
+  font-family:'Oswald', sans-serif;
+  font-size:24px; font-weight:700; color:var(--bright); margin-bottom:6px;
+}
+
+.cycle-label {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:11px; font-weight:600;
+  color:var(--text); letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* ===================== LAWS SECTION ===================== */
+.laws-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(320px,1fr));
+  gap:16px; margin-top:24px;
+}
+
+.law-card {
+  background:var(--panel); border:1px solid var(--border);
+  border-top:2px solid var(--amber);
+  padding:24px;
+}
+
+.law-title {
+  font-family:'Oswald', sans-serif;
+  font-size:16px; font-weight:700;
+  color:var(--amber); text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:8px;
+}
+
+.law-body {
+  font-size:13px; color:var(--text); line-height:1.7;
+}
+
+/* ===================== OVERALL PROGRESS ===================== */
+.overall-progress-section {
+  background:var(--dark);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:40px 20px;
+}
+
+.progress-modules-list {
+  display:flex; flex-direction:column; gap:8px;
+  max-width:900px; margin:0 auto;
+}
+
+.progress-module-row {
+  display:flex; align-items:center; gap:16px;
+  background:var(--panel); border:1px solid var(--border);
+  padding:12px 20px;
+}
+
+.pm-num {
+  font-family:'Oswald', sans-serif;
+  font-size:20px; font-weight:700; color:var(--border); width:40px;
+}
+
+.pm-name {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:15px; font-weight:600; color:var(--text);
+  text-transform:uppercase; letter-spacing:1px; flex:1;
+}
+
+.pm-bar {
+  width:200px; height:6px; background:var(--dark);
+  border:1px solid var(--border); flex-shrink:0;
+}
+
+.pm-bar-fill {
+  height:100%; background:linear-gradient(90deg, var(--green), var(--bright));
+  width:0%; transition:width 1s ease;
+}
+
+.pm-score {
+  font-family:'Share Tech Mono', monospace;
+  font-size:11px; color:var(--muted); width:60px; text-align:right;
+}
+
+/* ===================== FINAL EXAM BUTTON ===================== */
+.final-exam-section {
+  text-align:center; padding:80px 20px;
+  background: radial-gradient(ellipse at center, rgba(78,202,85,0.05) 0%, transparent 70%);
+}
+
+.final-exam-locked {
+  font-family:'Share Tech Mono', monospace;
+  font-size:12px; color:var(--muted); letter-spacing:2px;
+  margin-bottom:16px;
+}
+
+.btn-final {
+  background:linear-gradient(135deg, var(--red), #a01a11);
+  color:var(--white); border:none;
+  padding:20px 60px;
+  font-family:'Oswald', sans-serif; font-size:20px; font-weight:700;
+  letter-spacing:4px; text-transform:uppercase;
+  cursor:pointer; transition:all 0.3s;
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+}
+
+.btn-final:hover:not(:disabled) {
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(224,60,49,0.4);
+}
+
+.btn-final:disabled {
+  opacity:0.3; cursor:not-allowed;
+}
+
+/* ===================== FOOTER ===================== */
+footer {
+  background:var(--panel); border-top:1px solid var(--border);
+  padding:32px 20px; text-align:center;
+  position:relative; z-index:1;
+}
+
+.footer-logo {
+  font-family:'Oswald', sans-serif;
+  font-size:20px; font-weight:700;
+  color:var(--bright); letter-spacing:4px;
+  margin-bottom:8px;
+}
+
+.footer-text {
+  font-family:'Share Tech Mono', monospace;
+  font-size:10px; color:var(--muted); letter-spacing:2px;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:900px) {
+  .hero-inner { grid-template-columns:1fr; gap:40px; }
+  .hero-right { display:none; }
+  .cycle-visual { grid-template-columns:repeat(3,1fr); }
+  .cycle-step::after { display:none; }
+  .certificate { padding:30px 20px; }
+  .cert-footer { grid-template-columns:1fr; text-align:center; gap:20px; }
+  .cert-main-title { font-size:22px; }
+}
+
+@media(max-width:600px) {
+  .module-grid { grid-template-columns:1fr; }
+  .stat-grid { grid-template-columns:1fr 1fr; }
+  .cycle-visual { grid-template-columns:repeat(2,1fr); }
+  .header-status { display:none; }
+}
+
+/* Print styles */
+@media print {
+  body { background:white; color:black; }
+  body::before, body::after { display:none; }
+  header, .cert-print-btn, .modal-overlay { display:none !important; }
+  .certificate {
+    background:white; color:black;
+    border-color:#888;
+  }
+  .cert-watermark { opacity:0.06; }
+}
+
+/* Typing animation */
+.typewriter {
+  overflow:hidden; border-right:2px solid var(--bright);
+  white-space:nowrap; animation: typing 3s steps(40,end), blink 0.8s step-end infinite alternate;
+  width:fit-content; max-width:100%;
+}
+
+@keyframes typing {
+  from { width:0; }
+  to { width:100%; }
+}
+
+@keyframes blink {
+  50% { border-color:transparent; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-emblem"></div>
+      <div class="logo-text">
+        <span class="logo-title">Bravo Tactical India</span>
+        <span class="logo-sub">Intelligence Operator Training System</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="status-tag">
+        <div class="status-dot"></div>
+        SYSTEM ACTIVE
+      </div>
+      <div class="progress-bar-header">
+        <div class="progress-label">OVERALL PROGRESS: <span id="overallPct">0</span>%</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="headerProgressFill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner container">
+    <div class="hero-left">
+      <div class="classification-badge">■ RESTRICTED — OPERATORS ONLY</div>
+      <h1 class="hero-title">
+        Intelligence<br>
+        <span>Operator's</span><br>
+        Manual
+      </h1>
+      <p class="hero-subtitle">Bravo Tactical India — Field Training Series</p>
+      <p class="hero-desc">
+        A comprehensive, structured programme in Intelligence Gathering, Analysis, and Reporting for Law Enforcement, Paramilitary, and Security Operators. Complete all modules and pass assessments to earn your certification.
+      </p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="scrollToModules()">BEGIN TRAINING</button>
+        <button class="btn-secondary" onclick="document.getElementById('certSection').scrollIntoView({behavior:'smooth'})">VIEW CERTIFICATE</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="intel-panel">
+        <div class="panel-header">
+          <span class="panel-title">PROGRAMME STATISTICS</span>
+          <span class="panel-code">REF: BTI/IOM/2025</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-num">14</div>
+            <div class="stat-label">Total Modules</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">140+</div>
+            <div class="stat-label">Quiz Questions</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">80%</div>
+            <div class="stat-label">Passing Score</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">Cert</div>
+            <div class="stat-label">On Completion</div>
+          </div>
+        </div>
+      </div>
+      <div class="intel-panel">
+        <div class="panel-header">
+          <span class="panel-title">CLEARANCE REQUIRED</span>
+          <span class="panel-code">CLASSIFICATION: LEA</span>
+        </div>
+        <p style="font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--muted); line-height:1.8; letter-spacing:1px;">
+          THIS MATERIAL IS FOR AUTHORIZED PERSONNEL OF LAW ENFORCEMENT AGENCIES, PARAMILITARY FORCES, AND INTELLIGENCE ORGANIZATIONS. UNAUTHORIZED ACCESS IS PROHIBITED.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MODULES SECTION ===== -->
+<section class="modules-section" id="modules">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">TRAINING CURRICULUM</div>
+      <h2 class="section-title">Intelligence <span class="accent">Training Modules</span></h2>
+    </div>
+    <div class="module-grid" id="moduleGrid"></div>
+  </div>
+</section>
+
+<!-- ===== OVERALL PROGRESS ===== -->
+<section class="overall-progress-section" id="progressSection">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:24px;">
+      <div class="section-tag">OPERATOR DASHBOARD</div>
+      <h2 class="section-title">Training <span class="accent">Progress</span></h2>
+    </div>
+    <div class="progress-modules-list" id="progressList"></div>
+  </div>
+</section>
+
+<!-- ===== FINAL EXAM ===== -->
+<section class="final-exam-section" id="finalExamSection">
+  <div class="section-tag" style="justify-content:center; margin-bottom:16px;">CERTIFICATION ASSESSMENT</div>
+  <h2 class="section-title" style="margin-bottom:16px; text-align:center;">
+    FINAL <span class="accent">EXAMINATION</span>
+  </h2>
+  <p class="final-exam-locked" id="finalExamStatus">COMPLETE ALL 14 MODULES WITH 80% TO UNLOCK</p>
+  <br>
+  <button class="btn-final" id="finalExamBtn" disabled onclick="openFinalExam()">INITIATE FINAL EXAM</button>
+</section>
+
+<!-- ===== CERTIFICATE ===== -->
+<section class="cert-section" id="certSection">
+  <div class="container">
+    <div class="section-header" style="text-align:center;">
+      <div class="section-tag" style="justify-content:center;">CERTIFICATION</div>
+      <h2 class="section-title">Operator <span class="accent">Certificate</span></h2>
+    </div>
+
+    <div class="cert-input-form" id="certForm">
+      <div class="panel-header" style="margin-bottom:24px; padding:0 0 16px 0; border-bottom:1px solid var(--border);">
+        <span class="panel-title">ENTER OPERATOR DETAILS</span>
+        <span class="panel-code">CLASSIFICATION: RESTRICTED</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" id="certName" placeholder="Enter full name as per official records" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Designation / Rank</label>
+        <input class="form-input" id="certDesignation" placeholder="e.g. Inspector, ASI, DSP, Analyst" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Unit / Organization</label>
+        <input class="form-input" id="certUnit" placeholder="e.g. STF Punjab, CID Maharashtra, IB" type="text">
+      </div>
+      <button class="btn-primary" onclick="generateCertificate()" style="width:100%; margin-top:8px;">GENERATE CERTIFICATE</button>
+    </div>
+
+    <div class="certificate-wrapper" id="certificateWrapper">
+      <div class="certificate" id="certificateEl">
+        <div class="cert-watermark">BTI</div>
+        <div class="cert-corner tl"></div>
+        <div class="cert-corner tr"></div>
+        <div class="cert-corner bl"></div>
+        <div class="cert-corner br"></div>
+
+        <!-- HEADER -->
+        <div class="cert-header">
+          <div class="cert-issuer">BRAVO TACTICAL INDIA</div>
+          <div class="cert-issued-by">Field Intelligence Training Division</div>
+        </div>
+
+        <div class="cert-divider"></div>
+
+        <!-- OPERATOR DETAILS -->
+        <div class="cert-title-label">THIS IS TO CERTIFY THAT</div>
+        <div class="cert-main-title" id="certDisplayName">—</div>
+        <div class="cert-designation" id="certDisplayDesignation"></div>
+        <div class="cert-unit" id="certDisplayUnit"></div>
+
+        <div class="cert-divider"></div>
+
+        <!-- BODY -->
+        <div class="cert-body">
+          <p>
+            Has successfully completed all assessments of the
+            <strong style="color:var(--gold)">Intelligence Operator's Manual</strong> —
+            a comprehensive training programme in Intelligence Gathering, Collection
+            Methodology, Analysis, Legal Framework, Counterintelligence, Threat
+            Assessment, Cyber Intelligence, and Field Operations, conducted by
+            <strong style="color:var(--bright)">Bravo Tactical India</strong>.
+          </p>
+          <br>
+          <p style="font-size:13px; color:var(--muted);">
+            14 Modules ✦ HUMINT ✦ SIGINT ✦ OSINT ✦ IMINT ✦ Intelligence Cycle ✦
+            Laws &amp; Principles ✦ Counterintelligence ✦ Threat Assessment ✦
+            Cyber Intelligence ✦ Field Operations
+          </p>
+        </div>
+
+        <div class="cert-divider"></div>
+
+        <!-- FOOTER: Signature | Seal | Timestamp -->
+        <div class="cert-footer">
+          <div class="cert-footer-row">
+
+            <!-- LEFT: Single Signer -->
+            <div class="cert-signature-block">
+              <div class="cert-signature-name">A. Halder</div>
+              <div class="cert-sign-line"></div>
+              <div class="cert-sign-label">
+                A. HALDER<br>
+                DIRECTOR / INSTRUCTOR<br>
+                BRAVO TACTICAL INDIA
+              </div>
+            </div>
+
+            <!-- CENTRE: Seal -->
+            <div class="cert-seal">
+              <div class="cert-seal-text">BRAVO<br>TACTICAL<br>INDIA<br>✦ BTI ✦</div>
+            </div>
+
+            <!-- RIGHT: Pass Timestamp -->
+            <div class="cert-timestamp-block">
+              <div class="cert-timestamp-label">Date &amp; Time of Passing</div>
+              <div class="cert-timestamp-date" id="certDisplayDate">—</div>
+              <div class="cert-timestamp-time" id="certDisplayTime">—</div>
+              <div class="cert-sign-line" style="margin-top:10px;"></div>
+              <div class="cert-sign-label">CERTIFIED PASS TIMESTAMP<br>BRAVO TACTICAL INDIA</div>
+            </div>
+
+          </div>
+
+          <!-- ID Block below the footer row -->
+          <div class="cert-id-block" style="margin-top:18px;">
+            <div>
+              <div class="cert-id-label">CERTIFICATION ID</div>
+              <div class="cert-id-value" id="certDisplayId">—</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <button class="cert-print-btn" onclick="printCertificate()">⎙ PRINT CERTIFICATE</button>
+      <div style="text-align:center; margin-top:12px;">
+        <button class="btn-secondary" onclick="document.getElementById('verifySection').scrollIntoView({behavior:'smooth'})">
+          ◈ VERIFY THIS CERTIFICATE
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CERTIFICATION VERIFICATION ===== -->
+<section class="verify-section" id="verifySection">
+  <div class="container">
+    <div class="section-header" style="text-align:center; margin-bottom:40px;">
+      <div class="section-tag" style="justify-content:center;">CERTIFICATE AUTHENTICITY</div>
+      <h2 class="section-title">Verify <span class="accent">Certification</span></h2>
+      <p style="font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:2px; margin-top:12px;">
+        ENTER A BTI CERTIFICATION ID BELOW TO VERIFY ITS AUTHENTICITY
+      </p>
+    </div>
+    <div class="verify-form-wrap">
+      <div class="panel-header" style="margin-bottom:24px; padding:0 0 16px 0; border-bottom:1px solid var(--border);">
+        <span class="panel-title">CERTIFICATE VERIFICATION PORTAL</span>
+        <span class="panel-code">BTI / AUTH / PORTAL</span>
+      </div>
+      <label class="form-label" style="display:block; margin-bottom:8px;">Certification ID</label>
+      <input class="verify-input" id="verifyInput"
+        placeholder="e.g. BTI-ARKA-XD9GY8-QCF2N8"
+        maxlength="26" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')verifyCert()">
+      <button class="btn-primary" onclick="verifyCert()" style="width:100%; margin-top:4px;">
+        ◈ VERIFY CERTIFICATE
+      </button>
+      <div class="verify-result" id="verifyResult"></div>
+      <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--border);">
+        <p style="font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:1px; line-height:1.9; text-align:center;">
+          ◆ CERTIFICATION IDs ARE CRYPTOGRAPHICALLY SIGNED ◆<br>
+          VALID IDs ARE ISSUED ONLY UPON PASSING ALL 14 MODULES + FINAL EXAM AT ≥80%<br>
+          FORMAT: BTI-[NAME]-[TIMESTAMP]-[AUTH CODE]
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">BRAVO TACTICAL INDIA</div>
+  <div class="footer-text">INTELLIGENCE OPERATOR TRAINING SYSTEM — FIELD MANUAL EDITION</div>
+  <div class="footer-text" style="margin-top:8px; opacity:0.5;">FOR OFFICIAL USE ONLY | UNAUTHORIZED REPRODUCTION PROHIBITED</div>
+</footer>
+
+<!-- ===== MODULE CONTENT MODAL ===== -->
+<div class="modal-overlay" id="moduleModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-code" id="modalCode">MODULE 00</div>
+        <div class="modal-title" id="modalTitle">LOADING...</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===== FINAL EXAM MODAL ===== -->
+<div class="modal-overlay" id="finalModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-code">FINAL EXAMINATION</div>
+        <div class="modal-title">INTELLIGENCE OPERATOR CERTIFICATION</div>
+      </div>
+      <button class="modal-close" onclick="closeFinalModal()">✕</button>
+    </div>
+    <div class="modal-body" id="finalModalBody"></div>
+  </div>
+</div>
+
+<script>
+
+// ── ENCODED ANSWER KEY (tamper-protected) ─────────────────────────────────
+// Answers are XOR-encoded and base64-wrapped. Runtime decode only.
+const _k = (s,x)=>{const b=atob(s);return Array.from(b).map(c=>(c.charCodeAt(0)^x)-1)};
+const _e = "JiYmJyYmJicnJiYmJichJyYnJycnJicnJychJyYmJyYnJycmJychJycnJyYhJycnJicmJycnJicnJycnJyEnJyEnJycnJycnJyYnJycnJicnJycnJicnJycnJychJyYnJiYnJycnJycnJycnJycnJycnJiYnJycnJycnJycnJyYnJycnJycnJycnJycnJiYnJycmJycnJycnJyYnJycmJycnJicnJyYnJyc=";
+const _x = 37;
+function _getModAns(modIdx){const f=_k(_e,_x);return f.slice(modIdx*10,modIdx*10+10);}
+function _getFinalAns(){return _k(_e,_x).slice(140);}
+// ─────────────────────────────────────────────────────────────────────────
+
+// ================================================================
+// DATA — ALL MODULE CONTENT & QUIZZES
+// ================================================================
+
+const MODULES = [
+{
+  id:1, title:"What is Intelligence?",
+  time:"~25 min", desc:"Foundations, definitions, and the difference between data, information, and intelligence.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">Defining Intelligence</h2>
+<p class="content-p">Intelligence is not merely information. It is the <strong>product</strong> resulting from the collection, processing, integration, evaluation, analysis, and interpretation of available information concerning foreign nations, hostile groups, or areas of operation. Intelligence is <em>actionable knowledge</em> — it drives decisions.</p>
+<div class="intel-box">
+<div class="intel-box-title">◆ FORMAL DEFINITION</div>
+<p>Intelligence is knowledge about an adversary, environment, or phenomenon — produced through systematic collection and analysis — which enables decision-makers to act with reduced uncertainty.</p>
+</div>
+<h3 class="content-h3">The Data → Information → Intelligence Chain</h3>
+<p class="content-p"><strong>Data</strong> — Raw, unprocessed facts. A phone number. A vehicle registration. A name overheard.</p>
+<p class="content-p"><strong>Information</strong> — Data that has been given context and structure. The phone number belongs to a known criminal. The vehicle was photographed near the crime scene.</p>
+<p class="content-p"><strong>Intelligence</strong> — Information that has been analyzed, verified, evaluated for reliability, and interpreted in relation to a specific requirement. "Subject X is likely operating from District Y, using vehicle Z as cover, with a network of three associates — HIGH CONFIDENCE."</p>
+</div>
+
+<div class="content-section">
+<h2 class="content-h2">Categories of Intelligence</h2>
+<table class="intel-table">
+<thead><tr><th>Category</th><th>Description</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td><strong>Strategic</strong></td><td>Long-term, policy-level, national security scope</td><td>State-sponsored terror threat assessment</td></tr>
+<tr><td><strong>Operational</strong></td><td>Medium-term, supports specific operations or campaigns</td><td>Criminal syndicate mapping for a task force</td></tr>
+<tr><td><strong>Tactical</strong></td><td>Short-term, immediate action-oriented</td><td>Subject's daily movement pattern for arrest planning</td></tr>
+</tbody>
+</table>
+<h3 class="content-h3">Why Intelligence Matters</h3>
+<p class="content-p">Without intelligence, operations are reactive. With intelligence, operations become proactive, precise, and more likely to succeed. Intelligence reduces risk, eliminates surprise, and concentrates force on vulnerabilities.</p>
+<div class="warning-box">
+<div class="warning-box-title">⚠ CRITICAL PRINCIPLE</div>
+<p>Intelligence without action is wasteful. Action without intelligence is dangerous. The two must be inseparable in any effective security apparatus.</p>
+</div>
+</div>
+
+<div class="content-section">
+<h2 class="content-h2">Types of Intelligence Products</h2>
+<ul class="content-list">
+<li><strong>Current Intelligence</strong> — Day-to-day intelligence addressing immediate situations and events.</li>
+<li><strong>Estimative Intelligence</strong> — Projects likely developments and outcomes, supports planning.</li>
+<li><strong>Warning Intelligence</strong> — Alerts decision-makers to imminent threats. Most time-critical.</li>
+<li><strong>Scientific & Technical Intelligence</strong> — Covers capabilities of adversary weapons, technology.</li>
+<li><strong>Counterintelligence</strong> — Identifies and neutralizes threats to one's own intelligence apparatus.</li>
+</ul>
+</div>`,
+  questions:[
+    {q:"What is the correct hierarchy in the intelligence chain?", opts:["Intelligence → Information → Data","Data → Intelligence → Information","Data → Information → Intelligence","Information → Data → Intelligence"], exp:"The chain progresses from raw Data (unprocessed facts) to Information (contextualized data) to Intelligence (analyzed, actionable product)."},
+    {q:"Which type of intelligence is most time-critical and alerts decision-makers to imminent threats?", opts:["Current Intelligence","Estimative Intelligence","Warning Intelligence","Counterintelligence"], exp:"Warning Intelligence is the most time-critical, designed to alert decision-makers to threats that require immediate action."},
+    {q:"Tactical intelligence primarily supports:", opts:["National policy decisions","Long-term strategic planning","Immediate, specific operations","Scientific research programs"], exp:"Tactical intelligence is short-term and immediate — it directly supports specific operations such as arrests, raids, or surveillance."},
+    {q:"Which statement best describes 'actionable intelligence'?", opts:["Any collected data stored in a database","Verified, analyzed information enabling confident decisions","Rumours confirmed by two sources","Reports submitted to senior officers"], exp:"Actionable intelligence is analyzed, verified information that allows decision-makers to act with reduced uncertainty and confidence."},
+    {q:"A phone number overheard during surveillance is classified as:", opts:["Intelligence","Information","Data","Evidence"], exp:"An isolated, unprocessed fact like an overheard phone number is raw Data until it is contextualized and analyzed."},
+    {q:"Counterintelligence is primarily concerned with:", opts:["Collecting HUMINT from foreign sources","Analyzing satellite imagery","Identifying and neutralizing threats to one's own intelligence apparatus","Writing intelligence estimates"], exp:"Counterintelligence (CI) protects the intelligence apparatus itself by identifying infiltration, leaks, double agents, and hostile intelligence activities."},
+    {q:"Which intelligence category addresses long-term national security and policy?", opts:["Tactical","Operational","Strategic","Warning"], exp:"Strategic intelligence has the broadest scope, covering national-level threats and informing high-level policy decisions."},
+    {q:"Estimative intelligence is used to:", opts:["Warn of immediate threats","Project likely future developments for planning","Record past incidents","Handle day-to-day events"], exp:"Estimative intelligence projects probable future developments, helping commanders and policy-makers plan courses of action."},
+    {q:"The primary purpose of intelligence in operations is to:", opts:["Punish adversaries","Reduce uncertainty and enable proactive decision-making","Generate paperwork for the department","Confirm what commanders already believe"], exp:"Intelligence reduces uncertainty, enabling commanders to act proactively rather than reactively with greater precision and less risk."},
+    {q:"Which is NOT a standard type of intelligence product?", opts:["Current Intelligence","Warning Intelligence","Punitive Intelligence","Scientific & Technical Intelligence"], exp:"'Punitive Intelligence' is not a recognized intelligence product category. The standard types include Current, Estimative, Warning, Scientific/Technical, and Counterintelligence."}
+  ]
+},
+{
+  id:2, title:"The Intelligence Cycle",
+  time:"~25 min", desc:"The six-phase process from planning to dissemination — how raw collection becomes finished intelligence.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">The Intelligence Cycle — Overview</h2>
+<p class="content-p">The Intelligence Cycle is a systematic, repeating process through which intelligence is produced. It is not strictly linear — cycles overlap, products feed back into new requirements, and all phases may occur simultaneously during active operations.</p>
+<div class="cycle-visual">
+<div class="cycle-step"><div class="cycle-num">1</div><div class="cycle-label">Planning & Direction</div></div>
+<div class="cycle-step"><div class="cycle-num">2</div><div class="cycle-label">Collection</div></div>
+<div class="cycle-step"><div class="cycle-num">3</div><div class="cycle-label">Processing</div></div>
+<div class="cycle-step"><div class="cycle-num">4</div><div class="cycle-label">Analysis</div></div>
+<div class="cycle-step"><div class="cycle-num">5</div><div class="cycle-label">Dissemination</div></div>
+<div class="cycle-step"><div class="cycle-num">6</div><div class="cycle-label">Feedback</div></div>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Phase 1 — Planning & Direction</h2>
+<p class="content-p">The cycle begins with <strong>intelligence requirements</strong> — what does the decision-maker need to know? These are formalized as <em>Priority Intelligence Requirements (PIRs)</em> and guide all subsequent collection.</p>
+<ul class="content-list">
+<li>Identify the intelligence gap (what we don't know)</li>
+<li>Formulate specific, answerable questions</li>
+<li>Allocate collection assets and methods</li>
+<li>Set timelines and reporting formats</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Phase 2 — Collection</h2>
+<p class="content-p">Collection is the gathering of raw information from all available sources — HUMINT, SIGINT, OSINT, IMINT, and others. <strong>Collectors</strong> follow specific tradecraft to ensure information is accurate and legally obtained.</p>
+<div class="intel-box">
+<div class="intel-box-title">◆ COLLECTION DISCIPLINE</div>
+<p>Never collect more than what is required. Targeted, lawful collection is always superior to bulk collection which creates noise, legal risk, and analytical burden.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Phase 3 — Processing</h2>
+<p class="content-p">Collected data is converted into a form suitable for analysis. This includes <strong>translation, decryption, data reduction, imagery enhancement</strong>, and SIGINT filtering. Large volumes of raw collection are reduced to relevant nuggets.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Phase 4 — Analysis</h2>
+<p class="content-p">The analytical phase applies <strong>critical thinking, structured analytical techniques (SATs), and subject expertise</strong> to processed information. The analyst seeks to answer the PIRs and produce finished intelligence.</p>
+<ul class="content-list">
+<li><strong>Analysis of Competing Hypotheses (ACH)</strong> — Tests multiple explanations against available evidence</li>
+<li><strong>Link Analysis</strong> — Maps relationships between persons, places, and events</li>
+<li><strong>Pattern Analysis</strong> — Identifies behavioral and operational patterns of targets</li>
+<li><strong>Timeline Analysis</strong> — Sequences events to reveal causation and planning cycles</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Phase 5 — Dissemination</h2>
+<p class="content-p">Finished intelligence is delivered to the appropriate decision-makers in a timely, relevant, and accessible format. <strong>Right product, right person, right time</strong> is the dissemination principle.</p>
+<div class="warning-box">
+<div class="warning-box-title">⚠ DISSEMINATION DISCIPLINE</div>
+<p>Intelligence must never be disseminated beyond those with a legitimate need-to-know. Oversharing compromises sources, methods, and ongoing operations.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Phase 6 — Feedback</h2>
+<p class="content-p">Decision-makers provide feedback on whether the intelligence product met their needs. This feedback drives the next iteration of the cycle, refines collection priorities, and improves analytical quality over time.</p>
+</div>`,
+  questions:[
+    {q:"The Intelligence Cycle begins with:", opts:["Collection of HUMINT","Dissemination of reports","Planning and Direction","Analysis of collected data"], exp:"The cycle always begins with Planning & Direction — identifying what the decision-maker needs to know and formulating intelligence requirements."},
+    {q:"Priority Intelligence Requirements (PIRs) are established during which phase?", opts:["Collection","Analysis","Planning & Direction","Dissemination"], exp:"PIRs are formulated during the Planning & Direction phase to guide all collection and analytical activities."},
+    {q:"During the Processing phase, analysts primarily:", opts:["Write final intelligence reports","Collect information from sources","Convert raw data into analyzable form","Deliver products to commanders"], exp:"Processing converts raw collected data — through translation, decryption, imagery enhancement, etc. — into a form suitable for analysis."},
+    {q:"Analysis of Competing Hypotheses (ACH) is used to:", opts:["Select sources for collection","Test multiple explanations against available evidence","Translate foreign language intercepts","Determine classification levels"], exp:"ACH is a Structured Analytical Technique that systematically tests multiple hypotheses against available evidence to reduce analytical bias."},
+    {q:"The principle of 'Right product, right person, right time' applies to which phase?", opts:["Collection","Processing","Analysis","Dissemination"], exp:"Dissemination requires getting the right intelligence product to the right decision-maker at the right time — relevance and timeliness are paramount."},
+    {q:"Need-to-know is a principle associated with:", opts:["Collection targeting","Dissemination of intelligence","Source registration","Processing of SIGINT"], exp:"Need-to-know governs dissemination: intelligence is shared only with those who have both the clearance AND a legitimate operational need for it."},
+    {q:"Which analytical technique maps relationships between persons, places, and events?", opts:["ACH","Timeline Analysis","Link Analysis","Pattern Analysis"], exp:"Link Analysis visually maps relationships and associations between subjects, locations, communications, and events — essential for network mapping."},
+    {q:"The Intelligence Cycle is best described as:", opts:["A strictly linear, one-time process","A repeating, overlapping process that feeds back on itself","A single collection event followed by analysis","A process used only during wartime"], exp:"The Intelligence Cycle is not strictly linear — phases overlap, products feed back into new requirements, and the process is continuous."},
+    {q:"Feedback in the Intelligence Cycle helps to:", opts:["Terminate collection operations","Refine future collection priorities and improve products","Recruit new human sources","Classify intelligence products"], exp:"Feedback from decision-makers tells analysts and collectors whether requirements were met, improving the next iteration of the cycle."},
+    {q:"Pattern Analysis is used to:", opts:["Translate foreign language documents","Identify recurring behavioral and operational patterns of targets","Map the command structure of organizations","Assess the reliability of sources"], exp:"Pattern Analysis identifies predictable behaviors, operational rhythms, and routines that can be exploited or used to predict future activity."}
+  ]
+},
+{
+  id:3, title:"HUMINT — Human Intelligence",
+  time:"~30 min", desc:"Source operations, handling, cultivation, and the ethics and tradecraft of HUMINT collection.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">What is HUMINT?</h2>
+<p class="content-p">Human Intelligence (HUMINT) is intelligence derived from information collected and provided by human sources — informers, agents, walk-ins, refugees, prisoners, liaison contacts, and field operatives. HUMINT is one of the oldest and most indispensable forms of intelligence. It accesses intentions, motivations, and plans that no technical system can reliably reveal.</p>
+<div class="intel-box">
+<div class="intel-box-title">◆ CORE PRINCIPLE</div>
+<p>Machines can intercept what people say. Only people can discover what people think, plan, and intend.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Source Categories</h2>
+<ul class="content-list">
+<li><strong>Informer (CI/CK)</strong> — A member of the target community who provides information, usually motivated by money, ideology, revenge, or coercion.</li>
+<li><strong>Agent</strong> — A recruited individual trained and directed to collect specific intelligence.</li>
+<li><strong>Walk-in</strong> — An individual who voluntarily approaches law enforcement or intelligence with information or an offer to cooperate.</li>
+<li><strong>Penetration Agent</strong> — Placed inside the target organization or group.</li>
+<li><strong>Surveillance Operative</strong> — Conducts physical surveillance as a HUMINT function.</li>
+<li><strong>Liaison Contact</strong> — Official contact from other agencies, foreign services, or partner organizations.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Source Motivation — MICE / RASCLS</h2>
+<p class="content-p">Understanding why a source cooperates is critical to assessing reliability and predicting behaviour. The classic framework is <strong>MICE</strong>:</p>
+<table class="intel-table">
+<thead><tr><th>Letter</th><th>Motivation</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><strong>M</strong></td><td>Money</td><td>Most common. Mercenary sources can be bought by the other side.</td></tr>
+<tr><td><strong>I</strong></td><td>Ideology</td><td>Belief-driven. Most reliable if genuine. Hard to verify.</td></tr>
+<tr><td><strong>C</strong></td><td>Compromise / Coercion</td><td>Least reliable. May double, may inform adversary.</td></tr>
+<tr><td><strong>E</strong></td><td>Ego</td><td>Craves recognition. Can be manipulated. Risk of exaggeration.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Source Handling Principles</h2>
+<ul class="content-list">
+<li><strong>Compartmentalisation</strong> — Source identity known only to the handler and immediate supervisor.</li>
+<li><strong>Cover Story</strong> — The source must have a plausible reason for contact with the handler.</li>
+<li><strong>Security Meeting Protocol</strong> — Vary time, location, routes. No patterns.</li>
+<li><strong>Regular Contact</strong> — Sources left without contact become anxious, unreliable, or dangerously improvised.</li>
+<li><strong>Source Assessment</strong> — Continuously evaluate access, reliability, and motivation.</li>
+<li><strong>Validation</strong> — Cross-check source information against independently collected data.</li>
+</ul>
+<div class="warning-box">
+<div class="warning-box-title">⚠ HANDLER RESPONSIBILITY</div>
+<p>The handler bears full responsibility for the source's safety. A burned source can be tortured, killed, or imprisoned. Protect sources with your life — operationally speaking.</p>
+</div>
+</div>`,
+  questions:[
+    {q:"A 'walk-in' in HUMINT terminology refers to:", opts:["An undercover officer entering a target building","An individual who voluntarily approaches intelligence with information","A source who walks to scheduled meetings","A surveillance team member on foot"], exp:"A walk-in is an individual who voluntarily comes to law enforcement or intelligence offering cooperation or information, without prior recruitment."},
+    {q:"In the MICE model, which motivation is considered LEAST reliable for source operations?", opts:["Money","Ideology","Compromise/Coercion","Ego"], exp:"Coerced sources are the least reliable — they may double, inform the adversary, or provide false information to protect themselves."},
+    {q:"Compartmentalisation in source handling means:", opts:["Keeping all case files in locked cabinets","Source identity known only to handler and immediate supervisor","Limiting collection to one source per target","Separating HUMINT from SIGINT collection"], exp:"Compartmentalisation restricts knowledge of the source's identity to the handler and their direct supervisor, minimizing exposure risk."},
+    {q:"Why must handlers regularly vary meeting times, locations, and routes?", opts:["To save fuel and reduce operational costs","To avoid creating predictable patterns that could burn the source","To comply with departmental leave policies","To confuse the source and maintain control"], exp:"Varying meeting protocols prevents surveillance or hostile intelligence from identifying the source-handler relationship through pattern analysis."},
+    {q:"A penetration agent is defined as:", opts:["An undercover officer who carries a wire","An agent placed inside the target organization","A surveillance specialist in urban environments","A technical specialist handling SIGINT equipment"], exp:"A penetration agent is recruited and inserted into the target organization, providing intelligence from within — the highest-risk, highest-value HUMINT asset."},
+    {q:"Source validation involves:", opts:["Paying sources in cash only","Cross-checking source information against independently collected data","Giving sources unlimited access to operational plans","Allowing sources to self-report without oversight"], exp:"Validation requires corroborating source reporting against independently collected intelligence to confirm accuracy and detect fabrication or manipulation."},
+    {q:"Which source motivation is considered most ideologically reliable when genuine?", opts:["Money","Compromise","Ego","Ideology"], exp:"An ideology-motivated source acts from genuine belief, making them potentially very reliable — however, the sincerity of the ideology must be carefully verified."},
+    {q:"The primary reason HUMINT remains indispensable is:", opts:["It is cheaper than technical collection","It can access human intentions and plans that technical systems cannot","It is the oldest form of intelligence","It requires no legal authority"], exp:"Only human sources can reliably access what targets think, plan, and intend — the inner world that SIGINT and IMINT cannot penetrate."},
+    {q:"What is the handler's primary moral and operational responsibility?", opts:["Producing reports on schedule","Maximizing the number of active sources","Protecting the source's safety and identity","Ensuring sources are paid on time"], exp:"The handler bears complete responsibility for the source's safety. Operational security failures can result in the source's imprisonment or death."},
+    {q:"Which category of source provides intelligence through official inter-agency or inter-service contact?", opts:["Walk-in","Informer","Liaison Contact","Penetration Agent"], exp:"Liaison contacts are official sources from partner agencies, police forces, foreign services, or other organizations who share information through formal channels."}
+  ]
+},
+{
+  id:4, title:"SIGINT, OSINT & Technical Collection",
+  time:"~30 min", desc:"Signals intelligence, open-source intelligence, imagery, and the modern technical collection ecosystem.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">Technical Intelligence Disciplines</h2>
+<p class="content-p">Modern intelligence collection relies on a multi-source approach. Technical disciplines provide volume and precision that complement HUMINT. Each discipline has unique strengths, limitations, and legal requirements.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">SIGINT — Signals Intelligence</h2>
+<p class="content-p">SIGINT encompasses all intelligence derived from electronic signals including communications, radar emissions, and electronic data.</p>
+<ul class="content-list">
+<li><strong>COMINT (Communications Intelligence)</strong> — Intercept of voice calls, SMS, emails, messaging apps, radio communications.</li>
+<li><strong>ELINT (Electronic Intelligence)</strong> — Non-communications signals such as radar, guidance systems, tracking devices.</li>
+<li><strong>FISINT (Foreign Instrumentation Signals Intelligence)</strong> — Data from weapons systems and space vehicles.</li>
+</ul>
+<div class="warning-box">
+<div class="warning-box-title">⚠ LEGAL REQUIREMENT</div>
+<p>In India, interception of telecommunications requires a lawful order under Section 5(2) of the Indian Telegraph Act, 1885, or the IT Act, 2000. Unauthorized interception is a criminal offence.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">OSINT — Open Source Intelligence</h2>
+<p class="content-p">OSINT is intelligence derived from publicly available information — social media, news, academic publications, public records, geospatial data, and the dark web. OSINT is the fastest-growing intelligence discipline due to the explosion of digital information.</p>
+<ul class="content-list">
+<li>Social media profile analysis (Facebook, Instagram, Twitter/X, Telegram)</li>
+<li>Geolocation from photo metadata (EXIF data)</li>
+<li>Public financial records, property records, court filings</li>
+<li>News monitoring and media analysis</li>
+<li>Dark web forums, marketplaces, and communication channels</li>
+<li>Satellite imagery from commercial providers (Google Earth, Sentinel Hub)</li>
+</ul>
+<div class="intel-box">
+<div class="intel-box-title">◆ OSINT ADVANTAGE</div>
+<p>OSINT is legally low-risk (information is publicly available), extremely cost-effective, and can provide rapid initial intelligence on targets before committing covert resources.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">IMINT — Imagery Intelligence</h2>
+<p class="content-p">IMINT derives intelligence from photographs and visual imagery from satellites, aerial platforms, drones (UAVs), and ground-based cameras. Key applications include:</p>
+<ul class="content-list">
+<li>Terrain mapping and infrastructure analysis</li>
+<li>Counting personnel, vehicles, and material</li>
+<li>Monitoring changes in target locations over time (change detection)</li>
+<li>Battle damage assessment</li>
+<li>Tracking vessel and vehicle movements</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">TECHINT — Technical Intelligence</h2>
+<p class="content-p">TECHINT is derived from the analysis of adversary equipment, weapons, explosives, and technology. A recovered IED provides TECHINT on materials, assembly techniques, and maker signatures.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">CYBINT / DNINT — Cyber Intelligence</h2>
+<p class="content-p">Intelligence derived from cyberspace — digital footprints, network traffic analysis, malware signatures, and dark web activity. Increasingly critical as adversaries migrate operations online.</p>
+</div>`,
+  questions:[
+    {q:"COMINT stands for:", opts:["Computer Intelligence","Communications Intelligence","Counterintelligence Methods","Combat Information"], exp:"COMINT (Communications Intelligence) is a subset of SIGINT focusing on the interception and analysis of human communications — calls, messages, emails, radio."},
+    {q:"Under which Indian law is telecommunications interception authorized?", opts:["IPC Section 420","IT Act Section 66A","Section 5(2) of the Indian Telegraph Act 1885","CrPC Section 41"], exp:"Lawful interception in India requires authorization under Section 5(2) of the Indian Telegraph Act, 1885, or applicable provisions of the IT Act, 2000."},
+    {q:"Which OSINT technique extracts location data from photographs?", opts:["Link Analysis","EXIF metadata analysis","ELINT scanning","COMINT intercept"], exp:"EXIF metadata embedded in digital photographs can contain GPS coordinates, device information, and timestamps — powerful OSINT geolocation data."},
+    {q:"Change detection in IMINT involves:", opts:["Detecting changes in a source's behaviour","Monitoring visual differences in a location over time using imagery","Changing the classification level of a document","Replacing one source with another"], exp:"Change detection compares imagery of the same location over time to identify new construction, vehicle movements, new equipment, or changes in activity patterns."},
+    {q:"TECHINT is primarily derived from:", opts:["Intercepted telephone communications","Analysis of adversary equipment, weapons, and technology","Open-source newspaper articles","Satellite imagery from commercial providers"], exp:"TECHINT involves physically or technically examining adversary equipment — weapons, IEDs, vehicles — to understand capabilities, origins, and manufacturing techniques."},
+    {q:"The fastest-growing intelligence discipline due to digital information explosion is:", opts:["HUMINT","SIGINT","OSINT","IMINT"], exp:"OSINT has seen explosive growth due to the massive volume of publicly available information on the internet, social media, and open databases."},
+    {q:"ELINT (Electronic Intelligence) focuses on:", opts:["Email and messaging app intercepts","Non-communications electronic signals such as radar emissions","Evidence from crime scenes","Encrypted communications only"], exp:"ELINT covers non-communication electronic signals — radar, weapons guidance systems, tracking signals — rather than human communications."},
+    {q:"A key legal advantage of OSINT collection is:", opts:["It requires no analytical skill","Information is publicly available, reducing legal risk","It is faster than SIGINT","It does not require any equipment"], exp:"Since OSINT uses publicly available information, it carries lower legal risk than covert collection methods, though privacy laws still apply in many contexts."},
+    {q:"Drone (UAV) imagery collected for intelligence purposes falls under which discipline?", opts:["HUMINT","SIGINT","CYBINT","IMINT"], exp:"UAV imagery is a form of IMINT (Imagery Intelligence), alongside satellite photography and aerial reconnaissance."},
+    {q:"CYBINT/DNINT focuses on intelligence from:", opts:["Field operatives in urban environments","Digital footprints, network traffic, and cyberspace activity","Signals emitted by radar systems","Commercial satellite databases"], exp:"Cyber Intelligence (CYBINT/DNINT) derives intelligence from digital environments — network analysis, dark web monitoring, malware analysis, and digital footprints."}
+  ]
+},
+{
+  id:5, title:"Source Evaluation & Information Grading",
+  time:"~20 min", desc:"The Admiralty System (NATO grading), reliability assessment, and information credibility rating.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">The Admiralty Grading System</h2>
+<p class="content-p">The Admiralty System (also called the NATO grading system) provides a standardized, two-part code for evaluating both the <strong>reliability of the source</strong> and the <strong>credibility of the information</strong> independently. It is used universally across intelligence and law enforcement agencies.</p>
+<table class="intel-table">
+<thead><tr><th colspan="2">SOURCE RELIABILITY (Letter)</th><th colspan="2">INFORMATION CREDIBILITY (Number)</th></tr></thead>
+<tbody>
+<tr><td><strong>A</strong></td><td>Completely Reliable</td><td><strong>1</strong></td><td>Confirmed by other sources</td></tr>
+<tr><td><strong>B</strong></td><td>Usually Reliable</td><td><strong>2</strong></td><td>Probably True</td></tr>
+<tr><td><strong>C</strong></td><td>Fairly Reliable</td><td><strong>3</strong></td><td>Possibly True</td></tr>
+<tr><td><strong>D</strong></td><td>Not Usually Reliable</td><td><strong>4</strong></td><td>Doubtful</td></tr>
+<tr><td><strong>E</strong></td><td>Unreliable</td><td><strong>5</strong></td><td>Improbable</td></tr>
+<tr><td><strong>F</strong></td><td>Reliability Cannot Be Assessed</td><td><strong>6</strong></td><td>Truth Cannot Be Assessed</td></tr>
+</tbody>
+</table>
+<div class="intel-box">
+<div class="intel-box-title">◆ EXAMPLE</div>
+<p><strong>B2</strong> = Usually Reliable source, information Probably True. This is actionable with standard precaution. <strong>E5</strong> = Unreliable source, Improbable information — discard unless independently corroborated.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Source Assessment Factors</h2>
+<ul class="content-list">
+<li><strong>Access</strong> — Does the source have genuine access to the information they are providing?</li>
+<li><strong>History of Accuracy</strong> — What is the source's track record of providing verifiable information?</li>
+<li><strong>Motivation</strong> — Is the motivation consistent and understood? Has it changed?</li>
+<li><strong>Consistency</strong> — Is the information internally consistent? Does it align with other intelligence?</li>
+<li><strong>Corroboration</strong> — Can the information be confirmed by an independent source or collection method?</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Common Source Reliability Pitfalls</h2>
+<ul class="content-list">
+<li><strong>Fabrication</strong> — Source invents intelligence to maintain relevance or continue payments.</li>
+<li><strong>Second-hand Reporting</strong> — Source reports what others have told them, not direct observation. Grade the original source.</li>
+<li><strong>Double Agent</strong> — Source is working for the adversary and feeding disinformation.</li>
+<li><strong>Mirror Imaging</strong> — Analyst assumes adversary thinks like themselves, leading to misinterpretation.</li>
+<li><strong>Confirmation Bias</strong> — Analyst overweights information confirming existing beliefs.</li>
+</ul>
+<div class="warning-box">
+<div class="warning-box-title">⚠ OPERATIONAL WARNING</div>
+<p>Never launch an operation based solely on F6 (unassessed) intelligence. Minimum requirement is C3, with corroboration from a second independent source for high-risk operations.</p>
+</div>
+</div>`,
+  questions:[
+    {q:"In the Admiralty System, what does 'A2' represent?", opts:["Unreliable source, probably true information","Completely reliable source, probably true information","Usually reliable source, confirmed information","Completely reliable source, confirmed information"], exp:"'A' = Completely Reliable source, '2' = Information Probably True. These are assessed independently — a reliable source can still provide unconfirmed information."},
+    {q:"A source graded 'F' in the Admiralty system means:", opts:["The source is a foreign national","Source reliability cannot be assessed","The source has failed a polygraph","The source is completely unreliable"], exp:"'F' in the source column means the reliability of the source cannot yet be assessed — typically a new or one-time source with no established track record."},
+    {q:"Confirmation bias in intelligence analysis refers to:", opts:["Confirming information through multiple sources","Overweighting evidence that confirms pre-existing beliefs","Using coded confirmation signals with sources","Formally confirming intelligence products before dissemination"], exp:"Confirmation bias causes analysts to give greater weight to information supporting existing hypotheses while discounting contradictory evidence — a major analytical failure risk."},
+    {q:"A source who invents intelligence to remain relevant and continue payments is committing:", opts:["Double agency","Mirror imaging","Fabrication","Confirmation bias"], exp:"Fabrication occurs when a source invents or embellishes intelligence, often to maintain their relationship with handlers and continue receiving payments."},
+    {q:"What is the minimum acceptable Admiralty grade for launching a high-risk police operation?", opts:["F6","E5","D4","C3 with corroboration"], exp:"High-risk operations should require at minimum C3 (Fairly Reliable source, Possibly True information), corroborated by a second independent source or collection method."},
+    {q:"Second-hand reporting in HUMINT means:", opts:["Reporting information from surveillance operations","A source reports what others told them, not direct observation","Submitting a report to two different officers","Copying intelligence from published reports"], exp:"Second-hand or hearsay reporting reduces reliability significantly — the analyst must grade the original source, not the reporting source, when assessing credibility."},
+    {q:"A double agent in HUMINT is dangerous because:", opts:["They are too expensive to run","They may be feeding your agency disinformation from the adversary","They have direct access to high-value targets","They often become walk-ins"], exp:"A double agent works for the adversary while appearing to work for your agency — they can provide false intelligence (disinformation) that leads operations astray."},
+    {q:"'Access' in source assessment evaluates:", opts:["Whether the source has internet access for communication","Whether the source genuinely has access to the information they claim","The source's physical access to handler meetings","The source's access to operational funds"], exp:"Access is fundamental — a source can only reliably report what they have genuine, direct access to. Claimed access must be verified against the source's position and relationships."},
+    {q:"Mirror imaging in intelligence analysis refers to:", opts:["Using reflected signals for SIGINT collection","Copying intelligence reports from allied agencies","Assuming the adversary thinks and acts like the analyst does","Creating duplicate source files for security"], exp:"Mirror imaging is a cognitive bias where the analyst incorrectly assumes the adversary shares the same logic, values, and decision-making processes as themselves."},
+    {q:"The Admiralty Grading System assesses source reliability and information credibility:", opts:["Together as a combined score","Independently of each other","Only for HUMINT sources","Only for SIGINT material"], exp:"The Admiralty System deliberately separates source reliability (A-F) from information credibility (1-6) because these are independent factors — a reliable source may still provide unconfirmed information."}
+  ]
+},
+{
+  id:6, title:"Surveillance Operations",
+  time:"~30 min", desc:"Mobile and static surveillance, counter-surveillance, technical surveillance, and urban tracking tradecraft.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">Surveillance — Definition and Purpose</h2>
+<p class="content-p">Surveillance is the systematic, covert observation of persons, places, vehicles, or events for intelligence-gathering or evidence-collection purposes. It is one of the most fundamental and widely used tools in law enforcement and intelligence operations.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Types of Surveillance</h2>
+<ul class="content-list">
+<li><strong>Static (Fixed) Surveillance</strong> — Observer(s) remain in a fixed position monitoring a target location. Also called an OP (Observation Post).</li>
+<li><strong>Mobile (Follow) Surveillance</strong> — Surveillance team follows a moving target by foot, vehicle, or a combination.</li>
+<li><strong>Technical Surveillance</strong> — Use of cameras, CCTV, GPS trackers, audio devices (bugs), or drones.</li>
+<li><strong>Aerial Surveillance</strong> — Surveillance from aircraft or UAV platforms, providing wide-area coverage.</li>
+<li><strong>Cyber Surveillance</strong> — Monitoring digital communications, online activity, and social media.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Mobile Surveillance Principles</h2>
+<ul class="content-list">
+<li><strong>ABC Positions</strong> — A (close follow), B (second in line), C (parallel route). Teams rotate to prevent identification.</li>
+<li><strong>Trigger</strong> — One static operative at the target's start point who initiates the follow when the target moves.</li>
+<li><strong>Never walk faster than the subject</strong> — Overtaking or rushing is the most common burn signal.</li>
+<li><strong>Natural Behaviour</strong> — Operators must blend into the environment completely.</li>
+<li><strong>Vehicle Combinations</strong> — Mix male/female, civilian vehicle types, colours, and use public transport if needed.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Counter-Surveillance</h2>
+<p class="content-p">Counter-surveillance (CS) is the practice of detecting whether one is being surveilled. Sophisticated adversaries will conduct deliberate detection drills known as <strong>Surveillance Detection Routes (SDRs)</strong>. Key techniques:</p>
+<ul class="content-list">
+<li>Stopping suddenly at shop windows (creates natural reflection view behind)</li>
+<li>Entering and immediately exiting buildings</li>
+<li>Taking illogical routes — turning right three times makes a left turn</li>
+<li>Changing pace dramatically</li>
+<li>Entering narrow, one-way environments (alleys, lifts)</li>
+</ul>
+<div class="warning-box">
+<div class="warning-box-title">⚠ SURVEILLANCE LEGALITY — INDIA</div>
+<p>Physical surveillance in public spaces does not generally require legal authority. Technical surveillance (bugs, GPS trackers) on private property requires lawful authorization. Unauthorized installation of listening devices is an offence under IPC and the IT Act.</p>
+</div>
+</div>`,
+  questions:[
+    {q:"An Observation Post (OP) is used in which type of surveillance?", opts:["Mobile surveillance","Cyber surveillance","Static (Fixed) surveillance","Aerial surveillance"], exp:"An Observation Post is used in static surveillance — observers remain fixed at a location monitoring a specific target building or area."},
+    {q:"In ABC mobile surveillance formation, who serves as the 'Trigger'?", opts:["The officer in the A position close to the subject","A static operative at the start point who initiates the follow","The C position officer on parallel routes","The team commander at a remote location"], exp:"The Trigger is a static operative positioned at the subject's starting location who initiates radio communication when the subject moves, starting the mobile follow."},
+    {q:"The most common mistake that burns a surveillance operative is:", opts:["Using an unmarked vehicle","Walking faster than the subject","Wearing casual clothing","Using hand signals"], exp:"Walking faster than the subject — overtaking them or rushing — is one of the most visible and common errors that alerts a counter-surveillance-aware subject."},
+    {q:"A Surveillance Detection Route (SDR) is conducted by:", opts:["Surveillance teams to confirm a subject's route","A target to detect whether they are being followed","Legal authorities to authorize surveillance operations","Technical teams to test surveillance equipment"], exp:"An SDR is a deliberate route taken by a subject (or their security) specifically designed to reveal and identify any surveillance operatives following them."},
+    {q:"Installing a GPS tracker on a suspect's private vehicle without authorization is:", opts:["Standard operating procedure","Legal if the suspect is a known criminal","An offence requiring lawful authorization","Allowed if sanctioned by the SHO"], exp:"Installing technical surveillance equipment (GPS, bugs) on private property requires lawful legal authorization. Unauthorized installation is an offence under IPC and IT Act provisions."},
+    {q:"Entering and immediately exiting a building during a walk is a:", opts:["Navigation error","Counter-surveillance technique","Surveillance initiation trigger","Emergency extraction procedure"], exp:"Entering and immediately exiting a building is a counter-surveillance technique — it forces any follower to react suddenly, potentially identifying themselves."},
+    {q:"To avoid creating patterns, mobile surveillance teams should:", opts:["Always use the same vehicle type","Rotate team members between A, B, and C positions","Always follow on foot","Use only government vehicles"], exp:"Rotating between ABC positions prevents any single operative from being in the same relative position too long, reducing the risk of the subject identifying a follower."},
+    {q:"Technical surveillance includes which of the following?", opts:["Foot follows only","CCTV monitoring, GPS trackers, and audio devices","Physical observation from rooftops","Interviewing witnesses"], exp:"Technical surveillance encompasses electronic and technological methods: CCTV, GPS tracking devices, covert audio recording (bugs), drones, and digital monitoring systems."},
+    {q:"Natural behaviour during surveillance means:", opts:["Wearing a uniform","Blending completely into the environment and behaving as a normal member of the public","Moving quickly to stay close to the subject","Maintaining constant eye contact with the subject"], exp:"Surveillance operatives must appear as normal civilians in the environment — their clothing, behaviour, pace, and reactions must be entirely natural and contextually appropriate."},
+    {q:"What makes aerial (UAV) surveillance particularly valuable?", opts:["It is the cheapest surveillance method","It provides wide-area coverage and avoids foot-level detection issues","It does not require any legal authorization","It can also intercept communications"], exp:"UAV/aerial surveillance provides broad coverage of areas that ground teams cannot cover, follows subjects across large distances, and operates beyond the typical ground-level counter-surveillance field of view."}
+  ]
+},
+{
+  id:7, title:"Intelligence Reporting",
+  time:"~20 min", desc:"Structure of intelligence reports, source report formats, dissemination protocols, and grading in reports.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">The Purpose of Intelligence Reporting</h2>
+<p class="content-p">Collected intelligence is only as valuable as its reporting. A poorly written, ambiguous, or untimely report can result in action on false premises, missed opportunities, or exposure of sources. Intelligence reports must be <strong>accurate, timely, complete, and relevant</strong>.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Types of Intelligence Reports</h2>
+<ul class="content-list">
+<li><strong>Spot Report (SPOTREP)</strong> — Immediate, brief report of a time-sensitive observation or event. The first report filed.</li>
+<li><strong>Source Report (SR)</strong> — Records the debriefing of a human source. Contains grading, source reference, and verbatim information.</li>
+<li><strong>Intelligence Summary (INTSUM)</strong> — Periodic summary of all intelligence activity over a given period.</li>
+<li><strong>Intelligence Assessment</strong> — In-depth, analytical product answering specific intelligence requirements.</li>
+<li><strong>Intelligence Bulletin</strong> — Warning-level product disseminated rapidly when a threat is identified.</li>
+<li><strong>Target Package</strong> — Comprehensive intelligence product focused on a specific target for operational planning.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Report Structure — The 5W1H Framework</h2>
+<p class="content-p">All intelligence reports must answer six fundamental questions:</p>
+<ul class="content-list">
+<li><strong>WHO</strong> — Who is involved? Subject identities, descriptions, associations.</li>
+<li><strong>WHAT</strong> — What happened or is planned? Activities, communications, movements.</li>
+<li><strong>WHEN</strong> — Date/time of the activity. Report date vs. information date must be distinguished.</li>
+<li><strong>WHERE</strong> — Location with as much precision as possible. Grid reference if applicable.</li>
+<li><strong>WHY</strong> — Assessed intention or purpose of the activity.</li>
+<li><strong>HOW</strong> — Method used. Vehicles, weapons, communications, associates.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Classification and Handling</h2>
+<table class="intel-table">
+<thead><tr><th>Classification</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><strong>TOP SECRET</strong></td><td>Unauthorized disclosure would cause exceptionally grave damage to national security</td></tr>
+<tr><td><strong>SECRET</strong></td><td>Unauthorized disclosure would cause serious damage to national security</td></tr>
+<tr><td><strong>CONFIDENTIAL</strong></td><td>Unauthorized disclosure would be prejudicial to national interests</td></tr>
+<tr><td><strong>RESTRICTED</strong></td><td>Not in the public interest to disclose; safeguarding required</td></tr>
+</tbody>
+</table>
+<div class="warning-box">
+<div class="warning-box-title">⚠ CLASSIFICATION PRINCIPLE</div>
+<p>Classify at the highest level required by the most sensitive element in the report. The source's identity alone may warrant TOP SECRET classification even if the information itself is RESTRICTED.</p>
+</div>
+</div>`,
+  questions:[
+    {q:"A SPOTREP (Spot Report) is:", opts:["A detailed analytical assessment","An immediate, brief report of a time-sensitive observation","A monthly summary of intelligence activity","A formal request for collection resources"], exp:"A Spot Report is the first, immediate report filed when a time-critical observation or event occurs — brief, factual, and timely."},
+    {q:"In the 5W1H framework, which element addresses the purpose or assessed intention?", opts:["WHO","WHAT","WHEN","WHY"], exp:"WHY addresses the assessed intention, motivation, or purpose behind the observed activity — a critical element distinguishing intelligence from mere observation."},
+    {q:"An Intelligence Bulletin is used primarily to:", opts:["Record the history of a source relationship","Rapidly disseminate warning-level threat information","Summarize monthly intelligence activities","Conduct source debriefings"], exp:"Intelligence Bulletins are rapid-dissemination products issued when an immediate or emerging threat is identified, providing decision-makers with timely warning."},
+    {q:"A Source Report (SR) must include:", opts:["Only the source's information without any metadata","Source reference code, Admiralty grading, and verbatim information","The source's full personal details for accountability","Only the analyst's assessment of the information"], exp:"A proper Source Report includes the source's reference code (never identity), the Admiralty grading of both source and information, and the verbatim reported information."},
+    {q:"Which classification level applies when disclosure would cause 'exceptionally grave damage' to national security?", opts:["RESTRICTED","CONFIDENTIAL","SECRET","TOP SECRET"], exp:"TOP SECRET is the highest standard classification — unauthorized disclosure at this level would cause exceptionally grave damage to national security."},
+    {q:"A Target Package is:", opts:["A collection of confiscated material from a suspect","Comprehensive intelligence focused on a specific target for operational planning","A list of intelligence requirements for the next collection cycle","A training package for new intelligence officers"], exp:"A Target Package is a complete intelligence product covering all known aspects of a specific target — identity, associates, locations, methods — used for operational planning."},
+    {q:"The principle 'Classify at the highest level required' means:", opts:["Always classify everything as TOP SECRET for safety","Classify based on the most sensitive single element in the report","Let the analyst choose based on personal judgment","Use RESTRICTED for all field reports"], exp:"A report containing elements of different sensitivity levels must be classified at the level of its most sensitive component — often the source's identity drives classification upward."},
+    {q:"When reporting 'WHEN' in an intelligence report, what distinction must be made?", opts:["Between local and UTC time","Between the date of information and the date of reporting","Between the subject's time zone and the analyst's","Between daytime and nighttime observations"], exp:"The date/time of the actual event or observation must be clearly distinguished from the date/time the report was written and submitted — these are often different."},
+    {q:"An Intelligence Summary (INTSUM) covers:", opts:["A single, urgent intelligence event","All intelligence activity over a defined period","Technical details of one specific source operation","Enemy weapons systems and capabilities"], exp:"An INTSUM is a periodic (daily, weekly) summary document compiling all significant intelligence observations and activities over a specified time period."},
+    {q:"Intelligence reports must above all be:", opts:["Lengthy and comprehensive to cover all possibilities","Accurate, timely, complete, and relevant","Written in technical jargon to ensure professional standards","Classified at TOP SECRET by default"], exp:"The four cardinal virtues of intelligence reporting are accuracy, timeliness, completeness, and relevance — a brilliant report that arrives too late has no operational value."}
+  ]
+},
+{
+  id:8, title:"Laws, Legal Framework & Principles",
+  time:"~35 min", desc:"Indian laws governing intelligence activities — IT Act, Telegraph Act, CrPC, IPC provisions, and international principles.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">Legal Framework for Intelligence Operations in India</h2>
+<p class="content-p">All intelligence operations in India must be conducted within a lawful framework. Operators must understand the relevant statutes, not merely to comply, but to understand the limits and authorities of their powers. Illegal intelligence gathering compromises prosecutions and exposes operators to criminal liability.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Key Indian Statutes</h2>
+<div class="laws-grid">
+<div class="law-card">
+<div class="law-title">Indian Telegraph Act, 1885 — Section 5(2)</div>
+<div class="law-body">Authorizes interception of telecommunications by Government in the interest of sovereignty, public safety, or prevention of offences. Requires authorization from the Secretary (Home) at State or Central level. Strict procedural compliance mandatory.</div>
+</div>
+<div class="law-card">
+<div class="law-title">Information Technology Act, 2000 — Section 69</div>
+<div class="law-body">Empowers the Central/State Government to issue directions for interception, monitoring, or decryption of digital information for national security or public order. Applies to internet communications, emails, and data stored on servers.</div>
+</div>
+<div class="law-card">
+<div class="law-title">CrPC Section 91 / BNSS 2023</div>
+<div class="law-body">Courts and police officers can issue summons/orders for production of documents and evidence. Under BNSS (replacing CrPC), search and seizure powers are modernized to include digital records and devices.</div>
+</div>
+<div class="law-card">
+<div class="law-title">IPC / BNS — Offences</div>
+<div class="law-body">Unauthorized surveillance, trespass for intelligence purposes, and misuse of state powers are criminal offences under IPC/BNS. Intelligence operators can face personal criminal liability for unauthorized acts.</div>
+</div>
+<div class="law-card">
+<div class="law-title">UAPA — Unlawful Activities Prevention Act</div>
+<div class="law-body">Provides extended powers of arrest, detention, and investigation for designated unlawful organizations and terrorist activities. Intelligence supporting UAPA cases must meet heightened evidentiary standards.</div>
+</div>
+<div class="law-card">
+<div class="law-title">Official Secrets Act, 1923</div>
+<div class="law-body">Prohibits unauthorized disclosure of classified government information. Intelligence officers handling classified material are bound by OSA provisions. Leaking intelligence is a criminal offence under this Act.</div>
+</div>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Fundamental Principles of Lawful Intelligence</h2>
+<ul class="content-list">
+<li><strong>Legality</strong> — All intelligence activities must have a legal basis in statute or authorised direction. 'It was useful' is not a legal justification.</li>
+<li><strong>Necessity</strong> — Intelligence collection must be necessary for the stated purpose. Less intrusive methods must be considered first.</li>
+<li><strong>Proportionality</strong> — The degree of intrusion must be proportionate to the seriousness of the threat or offence.</li>
+<li><strong>Authorization</strong> — Appropriate authority must sanction intrusive intelligence activities before they commence.</li>
+<li><strong>Accountability</strong> — Intelligence operators are accountable for their actions. Records must be maintained. Excess is not protected by rank.</li>
+<li><strong>Oversight</strong> — Independent review of intelligence activities is a democratic safeguard against abuse.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Right to Privacy — Puttaswamy Judgment (2017)</h2>
+<p class="content-p">The Supreme Court of India in <em>K.S. Puttaswamy v. Union of India (2017)</em> unanimously declared the Right to Privacy as a fundamental right under Article 21 of the Constitution. All surveillance and intelligence gathering activities must now be assessed against this constitutional standard. Surveillance that is arbitrary, disproportionate, or without legal basis violates the fundamental right to privacy.</p>
+<div class="warning-box">
+<div class="warning-box-title">⚠ CONSTITUTIONAL DUTY</div>
+<p>Intelligence operators have a constitutional duty to protect citizens' fundamental rights. Unauthorized surveillance is not merely illegal — it is unconstitutional.</p>
+</div>
+</div>`,
+  questions:[
+    {q:"Which law governs the interception of telephone communications in India?", opts:["IT Act, 2000 — Section 66","Indian Telegraph Act, 1885 — Section 5(2)","IPC Section 354","Official Secrets Act Section 3"], exp:"Section 5(2) of the Indian Telegraph Act, 1885 is the primary authority for lawful telecommunications interception in India, requiring Secretary-level authorization."},
+    {q:"The Puttaswamy Judgment (2017) established:", opts:["The right to bear arms under Article 19","The Right to Privacy as a fundamental right under Article 21","The authority for bulk surveillance by the state","The OSA provisions for intelligence officers"], exp:"In K.S. Puttaswamy v. Union of India (2017), the Supreme Court unanimously declared the Right to Privacy a fundamental right under Article 21 of the Constitution."},
+    {q:"The principle of Proportionality in intelligence operations means:", opts:["All suspects must be treated equally","The degree of intrusion must be proportionate to the seriousness of the threat","All intelligence assets must be proportionally funded","Operators must use proportional force when encountering suspects"], exp:"Proportionality requires that the level of intrusion into privacy or rights must be proportionate to the seriousness of the threat or offence being investigated."},
+    {q:"Unauthorized disclosure of classified intelligence is an offence under:", opts:["UAPA","Indian Evidence Act","Official Secrets Act, 1923","IT Act Section 43"], exp:"The Official Secrets Act, 1923 criminalizes unauthorized disclosure of classified government information, including intelligence products and sources."},
+    {q:"The UAPA (Unlawful Activities Prevention Act) provides:", opts:["Routine search and seizure powers for property offences","Extended arrest, detention, and investigation powers for terrorism and unlawful organizations","Authority for telecommunications interception","Privacy protections for accused persons"], exp:"UAPA provides special extended powers — including longer detention periods and designated organization provisions — specifically for terrorist and unlawful activity investigations."},
+    {q:"The principle of Necessity in intelligence operations requires:", opts:["Only necessary information to be included in reports","Less intrusive methods to be considered before more intrusive ones","All intelligence operators to have necessary security clearances","Operations to be conducted only when absolutely necessary during wartime"], exp:"Necessity requires that before using intrusive intelligence methods, operators must consider whether less intrusive means could achieve the same result."},
+    {q:"Section 69 of the IT Act, 2000 empowers the government to:", opts:["Register intelligence officers","Direct the interception, monitoring, or decryption of digital information","Authorize physical surveillance of digital devices","Prosecute hackers under special courts"], exp:"Section 69 of the IT Act provides authority for government direction on interception, monitoring, or decryption of information transmitted through computer resources."},
+    {q:"Intelligence accountability means:", opts:["Only senior officers are responsible for operational failures","Intelligence operators must maintain records and are personally liable for unauthorized acts","All intelligence operations require Parliamentary approval","Operators cannot be prosecuted while serving in intelligence roles"], exp:"Accountability means intelligence operators are individually responsible for their actions, must maintain proper records, and cannot hide behind organizational authority for personally unauthorized acts."},
+    {q:"Who must authorize intrusive telecommunications interception under the Telegraph Act?", opts:["The District Superintendent of Police","Any Gazetted Officer","The Secretary (Home) at State or Central Government level","The Chief Minister"], exp:"Lawful telecommunications interception under the Telegraph Act requires authorization from the Home Secretary (either State or Central Government level), a senior civil service officer."},
+    {q:"An intelligence operator conducting unauthorized surveillance of a private individual risks:", opts:["Only departmental proceedings","Personal criminal liability under IPC/BNS and constitutional violation","Only a formal warning","Nothing, as intelligence work is protected by statute"], exp:"Unauthorized surveillance creates personal criminal liability under IPC/BNS provisions and constitutes a constitutional violation of the Right to Privacy — operators are not immune."}
+  ]
+},
+{
+  id:9, title:"Counterintelligence (CI)",
+  time:"~25 min", desc:"Detecting hostile intelligence, protecting sources and methods, penetration, and defensive security.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">What is Counterintelligence?</h2>
+<p class="content-p">Counterintelligence (CI) is the discipline of detecting, identifying, assessing, neutralizing, and exploiting the intelligence activities of adversaries directed against your organization, operations, sources, and personnel. CI is the shield that protects the intelligence apparatus.</p>
+<div class="intel-box">
+<div class="intel-box-title">◆ CI MISSION</div>
+<p>Deny the adversary intelligence about your capabilities and intentions, while protecting your sources, methods, personnel, and facilities.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Hostile Intelligence Threats</h2>
+<ul class="content-list">
+<li><strong>Human Penetration</strong> — The adversary recruits an insider (employee, officer) to spy from within.</li>
+<li><strong>Technical Penetration</strong> — Audio or video devices planted in secure facilities; network intrusion.</li>
+<li><strong>SIGINT Collection</strong> — Interception of your communications to identify operations, sources, and personnel.</li>
+<li><strong>Trash Intelligence (TRASHINT)</strong> — Collecting and exploiting improperly disposed documents.</li>
+<li><strong>Social Engineering</strong> — Manipulating staff into disclosing sensitive information through deception.</li>
+<li><strong>Cyber Intrusion</strong> — Hacking databases, networks, and communications systems to extract intelligence.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">CI Protective Measures</h2>
+<ul class="content-list">
+<li><strong>Need-to-Know Enforcement</strong> — Information shared only with those who require it operationally.</li>
+<li><strong>PERSEC (Personnel Security)</strong> — Vetting, background checks, ongoing monitoring of personnel with access.</li>
+<li><strong>COMSEC (Communications Security)</strong> — Encrypted communications, secure facilities for sensitive discussions.</li>
+<li><strong>INFOSEC (Information Security)</strong> — Secure handling, storage, and disposal of classified materials.</li>
+<li><strong>Secure Facility Sweeps</strong> — Regular technical sweeps of secure facilities to detect planted devices.</li>
+<li><strong>Anomaly Detection</strong> — Monitoring for unusual access patterns, unexplained wealth, or foreign contacts.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Double Agent Operations</h2>
+<p class="content-p">When a hostile penetration is identified, CI may choose to <strong>run</strong> the double agent — allowing them to continue reporting to the adversary while feeding controlled information (disinformation). This is one of the most complex and high-value CI operations possible. Famous historical examples include the British Double Cross System in WWII.</p>
+<div class="warning-box">
+<div class="warning-box-title">⚠ INTERNAL RISK</div>
+<p>CI must be conducted with strict oversight. A CI apparatus without oversight can become a tool for political repression or targeting of innocent persons. CI operations against Indian citizens require legal authority.</p>
+</div>
+</div>`,
+  questions:[
+    {q:"The primary mission of Counterintelligence (CI) is:", opts:["Collecting intelligence from foreign sources","Protecting the intelligence apparatus from adversary penetration and exploitation","Writing daily intelligence reports","Managing the HUMINT source network"], exp:"CI's core mission is defensive — detecting, neutralizing, and exploiting adversary intelligence activities directed against your organization, sources, and methods."},
+    {q:"TRASHINT refers to:", opts:["Intelligence derived from low-quality (trash) sources","Exploiting improperly disposed documents and materials","Technical intelligence from damaged equipment","Low-priority intelligence reports"], exp:"TRASHINT (Trash Intelligence) involves collecting and exploiting classified or sensitive materials that have been improperly discarded — a significant and often overlooked security vulnerability."},
+    {q:"COMSEC (Communications Security) protects against:", opts:["Physical penetration of facilities","Interception and exploitation of your communications by adversaries","Unauthorized access to classified document archives","Recruitment of your personnel by hostile services"], exp:"COMSEC encompasses all measures — encryption, secure facilities, procedures — designed to prevent adversaries from intercepting and exploiting your communications."},
+    {q:"A Double Agent operation involves:", opts:["An agent operating in two countries simultaneously","Running an identified penetration to feed the adversary controlled disinformation","Two agents sharing the same identity","An agent collecting against two different targets"], exp:"A double agent operation deliberately runs an identified hostile penetration, feeding them controlled disinformation to mislead the adversary while gaining insight into their intelligence requirements."},
+    {q:"Which CI threat involves manipulating staff to disclose sensitive information?", opts:["Human Penetration","SIGINT Collection","Social Engineering","Technical Penetration"], exp:"Social engineering uses deception, manipulation, and psychological techniques to convince staff to reveal sensitive information — no technical equipment required."},
+    {q:"Personnel Security (PERSEC) in CI context includes:", opts:["Providing personal security details to intelligence officers","Background checks, vetting, and ongoing monitoring of staff with sensitive access","Setting personnel access quotas for classified material","Issuing ID cards to intelligence personnel"], exp:"PERSEC involves comprehensive background investigation of personnel before granting access to sensitive material, plus ongoing monitoring for indicators of compromise or hostile contact."},
+    {q:"Anomaly detection in CI watches for:", opts:["Technical anomalies in collection systems","Unusual access patterns, unexplained wealth, or unusual foreign contacts among personnel","Anomalous weather patterns affecting operations","Changes in adversary communication frequencies"], exp:"Anomaly detection identifies insider threats by flagging behavioural indicators: accessing material beyond their role, unexplained new wealth, unusual contact with foreign nationals, or erratic behaviour."},
+    {q:"Regular technical sweeps of secure facilities are conducted to:", opts:["Test equipment for operational readiness","Detect planted audio or video surveillance devices","Update facility security clearances","Train personnel in technical detection skills"], exp:"Facility sweeps using specialized equipment are conducted periodically to detect audio bugs, video devices, or other technical surveillance equipment that adversaries may have planted."},
+    {q:"The famous British Double Cross System demonstrated:", opts:["The failure of HUMINT in wartime","The successful running of enemy agents as double agents to deceive adversaries","The power of aerial imagery intelligence","The importance of codes and cipher security"], exp:"Britain's WWII Double Cross System successfully turned nearly all German agents in Britain into double agents, feeding Germany disinformation that contributed significantly to Allied victory."},
+    {q:"CI operations against Indian citizens require:", opts:["No special authority as CI is above normal law","Legal authority and proper oversight","Only the authorization of the Intelligence Bureau","Only verbal authorization from a senior officer"], exp:"CI operations targeting Indian citizens must have legal authority and be subject to oversight — CI without legal constraints can become a tool for political repression or targeting of innocent persons."}
+  ]
+},
+{
+  id:10, title:"Threat Assessment & Analysis",
+  time:"~25 min", desc:"Structured threat assessment, threat matrices, vulnerability analysis, and risk evaluation for operational decision-making.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">Threat Assessment — Purpose and Definition</h2>
+<p class="content-p">A threat assessment is a systematic evaluation of whether a threat exists, the capability of the threat actor to carry it out, and their intention to do so. In security and intelligence operations, threat assessments drive protective decisions, resource allocation, and operational planning.</p>
+<div class="intel-box">
+<div class="intel-box-title">◆ THREAT EQUATION</div>
+<p><strong>THREAT = CAPABILITY × INTENTION</strong><br>A threat actor without capability is merely hostile. A capable actor without intention is not an immediate threat. Both elements must be present and assessed.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">The Threat Assessment Process</h2>
+<ul class="content-list">
+<li><strong>Step 1 — Identify Potential Threats</strong> — All known threat actors, groups, or conditions relevant to the subject or operation.</li>
+<li><strong>Step 2 — Assess Capability</strong> — Resources, skills, weapons, access, numbers, and past operational success.</li>
+<li><strong>Step 3 — Assess Intention</strong> — Stated goals, ideology, historical targeting pattern, current intelligence on planning activity.</li>
+<li><strong>Step 4 — Assess Vulnerability</strong> — What vulnerabilities does the subject or operation present to the threat?</li>
+<li><strong>Step 5 — Assess Risk</strong> — Combining threat and vulnerability to produce a risk rating.</li>
+<li><strong>Step 6 — Recommend Countermeasures</strong> — Specific actions to reduce identified vulnerabilities.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Risk Matrix</h2>
+<table class="intel-table">
+<thead><tr><th>Likelihood</th><th>Low Impact</th><th>Medium Impact</th><th>High Impact</th></tr></thead>
+<tbody>
+<tr><td><strong>High</strong></td><td style="color:var(--amber)">MEDIUM</td><td style="color:var(--red)">HIGH</td><td style="color:var(--red)">CRITICAL</td></tr>
+<tr><td><strong>Medium</strong></td><td style="color:var(--bright)">LOW</td><td style="color:var(--amber)">MEDIUM</td><td style="color:var(--red)">HIGH</td></tr>
+<tr><td><strong>Low</strong></td><td style="color:var(--bright)">MINIMAL</td><td style="color:var(--bright)">LOW</td><td style="color:var(--amber)">MEDIUM</td></tr>
+</tbody>
+</table>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Confidence Levels in Assessments</h2>
+<ul class="content-list">
+<li><strong>HIGH CONFIDENCE</strong> — Assessment based on high-quality, corroborated intelligence from multiple reliable sources.</li>
+<li><strong>MODERATE CONFIDENCE</strong> — Assessment based on credible information, but with gaps or limited corroboration.</li>
+<li><strong>LOW CONFIDENCE</strong> — Assessment based on limited, unverified, or potentially unreliable information.</li>
+</ul>
+<p class="content-p">Confidence levels must always accompany threat assessments to enable decision-makers to calibrate their response appropriately.</p>
+</div>`,
+  questions:[
+    {q:"The Threat Equation states:", opts:["Threat = Capability + Opportunity","Threat = Capability × Intention","Threat = Resources + Motivation","Threat = Historical Pattern × Current Intelligence"], exp:"The fundamental threat equation is Capability × Intention. Both elements must be present — capability alone or intention alone does not constitute an actionable threat."},
+    {q:"When assessing threat CAPABILITY, analysts examine:", opts:["The target's vulnerability profile","Resources, skills, weapons, access, and past operational success of the threat actor","The political intentions of the threat actor's leadership","The legal status of the threat organization"], exp:"Capability assessment covers the threat actor's resources, skills, weaponry, access to the target, numbers, and their history of successfully executing operations."},
+    {q:"A 'High Likelihood, High Impact' risk in the risk matrix is classified as:", opts:["HIGH","MEDIUM","LOW","CRITICAL"], exp:"The intersection of High Likelihood and High Impact in the risk matrix produces a CRITICAL risk rating — requiring immediate priority countermeasures."},
+    {q:"Confidence levels in intelligence assessments tell decision-makers:", opts:["How confident the analyst is in their career","How to calibrate their response based on the quality of underlying intelligence","The classification level of the assessment","The timeframe within which action must be taken"], exp:"Confidence levels inform decision-makers about the quality and reliability of the intelligence underpinning the assessment, allowing proportionate responses to different-quality assessments."},
+    {q:"Step 4 in the Threat Assessment Process involves:", opts:["Identifying potential threat actors","Assessing the threat actor's intention","Assessing the subject's or operation's vulnerabilities","Recommending countermeasures"], exp:"Step 4 is Vulnerability Assessment — identifying what specific weaknesses in the protected subject or operation could be exploited by the identified threat."},
+    {q:"'HIGH CONFIDENCE' in a threat assessment means:", opts:["The analyst is personally very confident","The assessment is based on multi-source, corroborated, high-quality intelligence","The threat has been confirmed by law enforcement arrest","The assessment was reviewed by senior officers"], exp:"HIGH CONFIDENCE reflects an assessment based on high-quality intelligence corroborated by multiple reliable sources — the gold standard of intelligence-backed assessments."},
+    {q:"A threat actor with strong capability but no identified intention represents:", opts:["A CRITICAL threat requiring immediate action","An immediate threat requiring preemptive action","A potential but not immediate threat requiring monitoring","No threat and no further assessment needed"], exp:"Capability without identified intention means the actor is NOT an immediate threat but must be monitored — intentions can change, and capability already exists to act when intent emerges."},
+    {q:"The final step in the Threat Assessment Process is:", opts:["Assessing vulnerability","Assessing risk","Recommending specific countermeasures","Identifying potential threats"], exp:"Step 6 — Recommending Countermeasures — is the actionable output of the threat assessment process: specific measures to reduce identified vulnerabilities and risk levels."},
+    {q:"Why must confidence levels accompany threat assessments?", opts:["They are required by departmental format regulations","They allow decision-makers to calibrate responses to assessment quality","They indicate the analyst's seniority level","They determine the classification level of the document"], exp:"Without confidence levels, a decision-maker cannot distinguish a HIGH CONFIDENCE assessment backed by strong intelligence from a LOW CONFIDENCE estimate based on unverified rumour."},
+    {q:"Vulnerability assessment in threat analysis evaluates:", opts:["The threat actor's weaknesses","Weaknesses of the protected subject that the threat actor could exploit","The intelligence collection system's limitations","Legal vulnerabilities in the investigation"], exp:"Vulnerability assessment identifies specific gaps, weaknesses, or exposures in the protected target — locations, procedures, people, systems — that a threat actor could exploit."}
+  ]
+},
+{
+  id:11, title:"Cyber Intelligence & Digital OSINT",
+  time:"~30 min", desc:"Digital footprint analysis, dark web intelligence, social media OSINT, and cyber threat intelligence.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">The Digital Intelligence Environment</h2>
+<p class="content-p">The modern criminal, terrorist, and threat actor increasingly operates in digital spaces. Cyber Intelligence (CYBINT) and Digital OSINT have become essential competencies for intelligence operators. Every digital action leaves a trace — the intelligence operator's task is to find, preserve, and analyze these traces lawfully.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Social Media OSINT Techniques</h2>
+<ul class="content-list">
+<li><strong>Profile Analysis</strong> — Examining account creation date, posting patterns, network, and language use.</li>
+<li><strong>Geolocation</strong> — Extracting location data from photos (EXIF), geo-tagged posts, background analysis of images.</li>
+<li><strong>Network Mapping</strong> — Identifying friend/follower networks to map associates.</li>
+<li><strong>Timeline Analysis</strong> — Tracking when a subject is online to infer location, routine, and associates.</li>
+<li><strong>Sock Puppet Detection</strong> — Identifying fake accounts used by subjects for covert communication or propaganda.</li>
+<li><strong>Wayback Machine / Cached Pages</strong> — Recovering deleted content from web archives.</li>
+</ul>
+<div class="intel-box">
+<div class="intel-box-title">◆ OPSEC FOR INVESTIGATORS</div>
+<p>Never conduct OSINT from a personal account or department-attributed IP address. Use dedicated investigation accounts and VPN/TOR for sensitive browsing. Your digital footprint can alert the subject and destroy the operation.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Dark Web Intelligence</h2>
+<p class="content-p">The dark web (accessible via TOR browser) hosts criminal marketplaces, communication forums, and activist networks. Intelligence value includes: procurement of weapons/drugs/documents, communication between criminal cells, sale of stolen data, and planning of attacks.</p>
+<ul class="content-list">
+<li>Dark web monitoring requires dedicated, sanitized infrastructure</li>
+<li>Evidence collected from dark web must meet evidentiary standards for prosecution</li>
+<li>Undercover operations on dark web require legal authority under applicable CrPC/BNSS provisions</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Mobile Device Intelligence</h2>
+<ul class="content-list">
+<li><strong>CDR (Call Detail Records)</strong> — Records of all calls, SMS from a mobile number — available through lawful production orders to telecom companies.</li>
+<li><strong>IPDR (Internet Protocol Detail Records)</strong> — Logs of internet sessions, data connections, IP addresses used.</li>
+<li><strong>Tower Dump</strong> — All devices connecting to a specific cell tower during a defined timeframe — used to place suspects at a location.</li>
+<li><strong>Device Forensics</strong> — Physical or logical extraction of data from seized mobile devices.</li>
+</ul>
+<div class="warning-box">
+<div class="warning-box-title">⚠ LEGAL REQUIREMENT</div>
+<p>CDR, IPDR, and tower dump requests require a lawful production order served on the telecom provider. Device forensics on seized devices requires proper chain-of-custody documentation for admissibility.</p>
+</div>
+</div>`,
+  questions:[
+    {q:"EXIF data in digital photographs can reveal:", opts:["The photographer's identity","GPS coordinates, device information, and timestamps","The financial details of the photographer","Encrypted communications content"], exp:"EXIF (Exchangeable Image File Format) metadata embedded in digital photos can contain GPS location coordinates, camera type, and date/time of capture — critical OSINT geolocation data."},
+    {q:"A 'tower dump' in mobile intelligence provides:", opts:["CDR for one specific phone number","All devices connecting to a specific cell tower during a defined timeframe","Physical extraction of data from a device","IP addresses of all internet users in an area"], exp:"A tower dump provides the CDR/connection records of ALL mobile devices that connected to a specific cell tower during a defined time period, helping place suspects at a location."},
+    {q:"When conducting OSINT investigations, an operator should:", opts:["Use their personal social media account to access subject profiles","Use dedicated investigation accounts and sanitized infrastructure","Inform the subject before investigating their profile","Only use official government networks"], exp:"Using personal accounts or traceable department networks for OSINT can alert the subject (if they check who viewed their profile) and compromise the investigation's covert nature."},
+    {q:"Internet Protocol Detail Records (IPDR) contain:", opts:["Detailed content of emails sent by a subject","Logs of internet sessions, IP addresses, and data connections","Physical location records from cell towers","Audio recordings of internet voice calls"], exp:"IPDRs record internet connection data — when a device connected, what IP address was used, duration, and data volume — but NOT the content of those connections."},
+    {q:"The Wayback Machine is valuable in OSINT because:", opts:["It provides real-time social media monitoring","It stores cached copies of previously published web content that may have been deleted","It translates foreign language web pages","It automatically identifies sock puppet accounts"], exp:"The Wayback Machine archives historical snapshots of websites, allowing investigators to recover content that has since been deleted or modified by a subject."},
+    {q:"A 'sock puppet' in social media intelligence refers to:", opts:["A human source recruited through social media","A fake account used for covert communication or influence operations","A government monitoring account on social platforms","An account that has been compromised by hackers"], exp:"Sock puppets are fake social media accounts created by individuals to conceal their identity, communicate covertly with associates, or conduct influence operations."},
+    {q:"Dark web intelligence collection on Indian suspects requires:", opts:["No special authority as the dark web is unregulated","Legal authority under applicable CrPC/BNSS provisions","Only senior officer approval without formal legal process","Approval from international agencies only"], exp:"Undercover operations or targeted monitoring on the dark web against Indian subjects require legal authority under CrPC/BNSS provisions, just as physical undercover operations do."},
+    {q:"Call Detail Records (CDR) are obtained by:", opts:["Physically accessing the suspect's phone","Serving a lawful production order on the telecom provider","Requesting the data through the suspect's employer","Purchasing from commercial data brokers"], exp:"CDRs are obtained through lawful production orders served on telecommunications companies, requiring proper legal authority — they cannot be obtained without court or competent authority authorization."},
+    {q:"Timeline analysis of a subject's social media activity can reveal:", opts:["The subject's past criminal record","The subject's online routine, likely location pattern, and active hours","The identity of all law enforcement monitoring them","Their encrypted messaging content"], exp:"Analyzing when a subject posts, their peak activity hours, and changes in activity patterns can infer their location (time zone), daily routine, and significant life events."},
+    {q:"Device forensics evidence requires what for courtroom admissibility?", opts:["Admission by the accused","Proper chain-of-custody documentation from seizure through analysis","Two independent witness statements","Certification from the manufacturer"], exp:"Digital forensic evidence must be supported by documented chain-of-custody — every person who handled the device must be recorded, from seizure to analyst — to ensure integrity and admissibility."}
+  ]
+},
+{
+  id:12, title:"Field Intelligence Operations",
+  time:"~30 min", desc:"Safe houses, cover, agent meetings, debriefing techniques, operational security, and extraction protocols.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">Operational Security (OPSEC)</h2>
+<p class="content-p">OPSEC is the process of protecting unclassified information that, in the hands of an adversary, could be used to harm your operations, personnel, or sources. The classic OPSEC failure: an adversary doesn't need to intercept classified communications if they can observe unclassified patterns.</p>
+<ul class="content-list">
+<li><strong>Step 1 — Identify Critical Information</strong> — What information, if known by the adversary, would damage the operation?</li>
+<li><strong>Step 2 — Analyze Threats</strong> — Who are the adversary collectors? What can they observe?</li>
+<li><strong>Step 3 — Analyze Vulnerabilities</strong> — Where are the gaps in our security?</li>
+<li><strong>Step 4 — Apply Countermeasures</strong> — Cover stories, deception, communication security, route variation.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Cover and Cover Stories</h2>
+<p class="content-p">Cover is a false identity or explanation that protects an intelligence officer or source during covert operations. Cover has two components:</p>
+<ul class="content-list">
+<li><strong>Official Cover</strong> — The officer operates under a government position (e.g., consular official, trade delegation). Diplomatic-style protection but identified as government if burned.</li>
+<li><strong>Non-Official Cover (NOC)</strong> — The officer operates as a private citizen with a completely fabricated civilian identity. No government acknowledgment if burned. Highest risk, highest operational value.</li>
+</ul>
+<div class="intel-box">
+<div class="intel-box-title">◆ LEGEND</div>
+<p>A 'legend' is a complete, documented false identity — name, history, profession, relationships — that can withstand hostile scrutiny. Building a legend takes months or years.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Safe Houses & Meeting Sites</h2>
+<ul class="content-list">
+<li><strong>Safe House</strong> — A secure, discreet location for debriefing sources, conducting meetings, or staging operations. Must not be connected to the intelligence service.</li>
+<li><strong>Sterile Meeting</strong> — A meeting where handler and source do not arrive together, use different routes, and have no apparent connection.</li>
+<li><strong>Cover for Action</strong> — A plausible reason for the handler and source to be in the same location (shopping centre, restaurant).</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Source Debriefing Principles</h2>
+<ul class="content-list">
+<li>Debrief immediately after the source's contact with the target — memory degrades rapidly.</li>
+<li>Use open, non-leading questions: "Tell me everything that happened." Not: "Did you see them discussing weapons?"</li>
+<li>Clarify details without suggesting answers. Elicitation, not interrogation.</li>
+<li>Record verbatim. Do not paraphrase or interpret during the debrief.</li>
+<li>End with a requirements tasking for the next collection period.</li>
+</ul>
+</div>`,
+  questions:[
+    {q:"OPSEC (Operational Security) primarily protects:", opts:["Classified documents in secure facilities","Unclassified information that could harm operations if known to the adversary","Personnel from physical threats during operations","Communications networks from technical intercept"], exp:"OPSEC protects unclassified information — observable patterns, routines, and activities — that adversaries could exploit even without accessing classified material."},
+    {q:"A 'Legend' in intelligence tradecraft is:", opts:["A highly experienced intelligence officer","A complete, documented false identity that withstands hostile scrutiny","An official history of a classified operation","A commendation for exceptional intelligence work"], exp:"A legend is a fully developed false identity — name, background, profession, personal history — supported by genuine documentation, built to withstand adversary investigation."},
+    {q:"Non-Official Cover (NOC) differs from Official Cover because:", opts:["NOC officers operate in foreign countries only","If burned, the government provides no acknowledgment — maximum risk, maximum operational value","NOC is cheaper to maintain than official cover","NOC officers work only in domestic operations"], exp:"NOC officers operate entirely as private civilians — if caught or identified, the government will not acknowledge them, leaving them fully exposed. This maximizes access but creates extreme personal risk."},
+    {q:"A 'sterile meeting' between handler and source means:", opts:["The meeting takes place in a hospital or sterile environment","They arrive separately by different routes with no apparent connection","The conversation is recorded for quality control","The meeting takes place over encrypted digital communications"], exp:"A sterile meeting ensures that the handler and source have no observable connection — arriving separately, using different routes, meeting in a natural cover setting."},
+    {q:"When debriefing a source, what type of questioning should be used?", opts:["Leading questions to confirm existing intelligence","Closed yes/no questions for efficiency","Open, non-leading questions: 'Tell me everything that happened'","Rapid-fire questioning to prevent fabrication"], exp:"Open, non-leading questions allow the source to provide their full, unguided account — leading questions can contaminate source information with the handler's assumptions."},
+    {q:"The first step of the OPSEC process is:", opts:["Applying countermeasures","Analyzing adversary threats","Identifying critical information","Analyzing vulnerabilities"], exp:"The OPSEC process begins by identifying what Critical Information — if known by the adversary — would compromise the operation. This defines what needs protecting."},
+    {q:"A Safe House must:", opts:["Be located near the intelligence headquarters","Not be connected or traceable to the intelligence service","Be registered with local police for security","Be located in a government building"], exp:"A safe house must be completely disassociated from the intelligence service — connection to the service through property records, utility bills, or personnel associations would compromise it."},
+    {q:"Source debriefing should occur:", opts:["Only at scheduled monthly intervals","As soon as possible after the source's contact with the target","Only in the intelligence office building","After the handler has time to review previous reports"], exp:"Debriefing immediately after the source's contact maximizes information quality — human memory degrades rapidly and details are lost. Delayed debriefing means lost intelligence."},
+    {q:"'Cover for Action' provides:", opts:["Legal authority for covert operations","A plausible reason for the handler and source to be in the same location","Protection for the officer if arrested","The official cover identity for the handler"], exp:"Cover for Action is the plausible, innocent explanation for why the handler and source might legitimately be in the same place — at a market, café, sports venue — making their meeting appear coincidental."},
+    {q:"During source debriefing, verbatim recording is important because:", opts:["It satisfies departmental audit requirements","It prevents the source's words being changed by analyst interpretation before analysis","It is faster than summary notes","It provides voice samples for identification purposes"], exp:"Recording the source's exact words — not a paraphrased interpretation — preserves the raw intelligence and allows analysts to assess meaning without the handler's inadvertent interpretation already embedded."}
+  ]
+},
+{
+  id:13, title:"Intelligence Ethics & Principles",
+  time:"~20 min", desc:"Professional ethics, preventing abuse, handling sensitive community intelligence, and the moral framework of intelligence work.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">Why Ethics in Intelligence?</h2>
+<p class="content-p">Intelligence work gives officers extraordinary power over individuals' lives, privacy, and freedom. Without an ethical framework, this power corrupts operations, destroys civil liberties, and ultimately delegitimizes the security apparatus. Ethical intelligence is not merely moral — it is operationally superior. Illegally obtained intelligence fails in court, burned sources cannot be re-recruited, and communities stop cooperating when they feel persecuted.</p>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Core Ethical Principles</h2>
+<ul class="content-list">
+<li><strong>Truth</strong> — Intelligence officers must be honest in their reporting. Fabricating, exaggerating, or omitting intelligence to support a preferred conclusion is a fundamental ethical and operational failure.</li>
+<li><strong>Objectivity</strong> — Analysis must follow the evidence, not confirm the pre-existing narrative of commanders or political superiors.</li>
+<li><strong>Integrity</strong> — Personal conduct must be beyond reproach. Intelligence officers who accept bribes, compromise sources for personal gain, or misuse intelligence access are criminals.</li>
+<li><strong>Lawfulness</strong> — Adherence to the legal framework is non-negotiable. 'Following orders' is not a defence for unlawful intelligence activities.</li>
+<li><strong>Proportionality</strong> — The level of intrusion must be proportionate to the genuine threat or requirement.</li>
+<li><strong>Respect for Persons</strong> — Sources, subjects, and communities are human beings with rights. Intelligence work must not dehumanize them.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Handling Community Intelligence</h2>
+<p class="content-p">Intelligence involving minority communities, religious groups, or political organizations requires particular care. Entire communities must not be treated as suspects based on the actions of individuals. The principle is <strong>individual threat, not collective suspicion</strong>.</p>
+<div class="warning-box">
+<div class="warning-box-title">⚠ ETHICAL RED LINE</div>
+<p>Using intelligence tools to target individuals based on religion, ethnicity, political opinion, or caste — rather than specific, evidence-based threat indicators — is both unconstitutional and morally indefensible.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Preventing Intelligence Abuse</h2>
+<ul class="content-list">
+<li><strong>Independent Oversight</strong> — An intelligence apparatus that oversees only itself will eventually abuse its power.</li>
+<li><strong>Whistleblower Protections</strong> — Officers who identify illegal activity must have protected channels to report without fear of retaliation.</li>
+<li><strong>Document Everything</strong> — Comprehensive records enable accountability and protect operators who act within the law.</li>
+<li><strong>Speak Up</strong> — If ordered to conduct an operation you believe is illegal or unethical, raise it immediately through proper channels — in writing.</li>
+</ul>
+</div>`,
+  questions:[
+    {q:"The principle of Objectivity in intelligence analysis requires:", opts:["Supporting the intelligence conclusions preferred by senior commanders","Following the evidence regardless of what conclusion it leads to","Classifying all assessments at the highest level","Completing reports within the required timeframe"], exp:"Objectivity demands that analysis follows the evidence — not the preferences, assumptions, or political requirements of decision-makers. Intelligence that confirms what commanders want to hear is dangerous."},
+    {q:"Why is illegally obtained intelligence operationally problematic?", opts:["It is more expensive to process","It fails in court, burned sources cannot be re-recruited, and community cooperation ends","It requires additional classification","It cannot be processed by standard intelligence systems"], exp:"Illegally obtained intelligence creates cascading operational failures: inadmissibility in court, destruction of source networks, and withdrawal of community cooperation — making it ultimately counterproductive."},
+    {q:"The principle 'individual threat, not collective suspicion' means:", opts:["Only one individual can be investigated at a time","Communities must not be treated as suspects based on the actions of individuals within them","Individual threat assessments are more accurate than collective ones","Only individuals with criminal records may be placed under surveillance"], exp:"Collective suspicion — treating all members of a community as threats based on the acts of some — is both ethically wrong and operationally counterproductive, damaging trust and intelligence flow."},
+    {q:"'Following orders' as a defence for unlawful intelligence operations:", opts:["Is a complete legal defence under Indian law","Is not a defence — operators are personally liable for unlawful acts","Is accepted as a defence in emergency situations","Is only applicable for junior officers below Inspector rank"], exp:"'Following orders' is NOT a legal defence for personally participating in unlawful intelligence activities. Operators bear individual accountability for their actions."},
+    {q:"An intelligence officer who fabricates intelligence to support a command preference:", opts:["Commits only a minor departmental infraction","Commits a fundamental ethical and operational failure that can cause severe harm","Is acting within acceptable operational flexibility","Can be retroactively authorized by senior officers"], exp:"Fabricating intelligence is among the most serious ethical violations in intelligence work — decisions based on fabricated intelligence can cause wrongful imprisonment, failed operations, and loss of life."},
+    {q:"Independent oversight of intelligence is important because:", opts:["It improves collection efficiency","An intelligence apparatus that oversees only itself will eventually abuse its power","It reduces operational costs","It satisfies international treaty requirements"], exp:"History has repeatedly demonstrated that unchecked intelligence agencies, regardless of intentions, tend toward abuse of power. Independent oversight is a critical democratic safeguard."},
+    {q:"Using intelligence tools to target individuals based on religion or political opinion (without specific threat indicators) is:", opts:["Acceptable during national security emergencies","Both unconstitutional and morally indefensible","Acceptable if authorized by senior officers","Standard practice for preventive intelligence"], exp:"Targeting based on religion, ethnicity, or political opinion — without specific, evidence-based threat indicators — violates constitutional rights, is illegal under fundamental rights provisions, and is ethically indefensible."},
+    {q:"When an intelligence officer believes they have been ordered to conduct an illegal operation, they should:", opts:["Conduct the operation as ordered and report later","Immediately comply and then file an internal complaint","Raise the concern through proper channels — in writing — immediately","Refuse and go to the media"], exp:"The correct response is to immediately raise the concern in writing through proper internal channels — documenting the objection protects the officer legally and creates an official record."},
+    {q:"Integrity in intelligence work means:", opts:["Maintaining good physical fitness for field operations","Personal conduct beyond reproach — refusing bribes and not misusing intelligence access","Ensuring all reports meet formatting integrity standards","Protecting the integrity of source files from unauthorized access"], exp:"Integrity requires that intelligence officers' personal conduct is beyond reproach — accepting bribes, trading intelligence for personal gain, or misusing access to surveillance capabilities are criminal acts."},
+    {q:"Comprehensive documentation of intelligence activities serves to:", opts:["Satisfy annual departmental audit requirements only","Enable accountability, protect lawful operators, and expose those who act unlawfully","Provide training material for new recruits","Meet international intelligence sharing standards"], exp:"Good documentation creates accountability — it protects operators who act within the law by demonstrating compliance, while exposing those who operate outside legal and ethical boundaries."}
+  ]
+},
+{
+  id:14, title:"Intelligence Integration & Briefing",
+  time:"~25 min", desc:"All-source intelligence fusion, producing finished intelligence briefs, oral briefing techniques, and intelligence to operations handover.",
+  content:`
+<div class="content-section">
+<h2 class="content-h2">All-Source Intelligence Fusion</h2>
+<p class="content-p">No single intelligence discipline provides a complete picture. The intelligence analyst's task is to fuse information from all available disciplines — HUMINT, SIGINT, OSINT, IMINT, TECHINT — into a coherent, complete assessment. This is the highest analytical skill: pattern recognition across diverse information streams.</p>
+<div class="intel-box">
+<div class="intel-box-title">◆ FUSION PRINCIPLE</div>
+<p>The whole is greater than the sum of its parts. HUMINT says "the subject will travel tomorrow." SIGINT confirms "anomalous communications pattern detected." OSINT shows "ticket booking at railway station in subject's name." Together: HIGH CONFIDENCE operational assessment.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">The Intelligence Brief — Structure</h2>
+<ul class="content-list">
+<li><strong>Situation</strong> — What is the current intelligence picture? What do we know and at what confidence level?</li>
+<li><strong>Threat Assessment</strong> — Who are the threats, what are their capabilities and intentions?</li>
+<li><strong>Key Intelligence Gaps</strong> — What do we NOT know that we need to know?</li>
+<li><strong>Recommended Actions / Options</strong> — What intelligence suggests as the appropriate response options.</li>
+<li><strong>Dissemination Plan</strong> — Who else needs this intelligence and how will it reach them?</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Intelligence-to-Operations Handover</h2>
+<p class="content-p">The handover from intelligence to operational planning is a critical and often poorly managed transition. Key principles:</p>
+<ul class="content-list">
+<li>Intelligence officers must brief operational commanders directly — not merely submit reports.</li>
+<li>Commanders must understand the confidence level and sourcing of intelligence before committing to operations.</li>
+<li>Operations must be designed to validate or collect additional intelligence, not merely consume it.</li>
+<li>After-action intelligence collection is mandatory — every operation reveals new intelligence about the adversary.</li>
+</ul>
+</div>
+<div class="content-section">
+<h2 class="content-h2">Oral Briefing Techniques</h2>
+<ul class="content-list">
+<li><strong>Bottom Line Up Front (BLUF)</strong> — Lead with the key finding. Decision-makers don't have time for lengthy build-up.</li>
+<li><strong>Clear, Simple Language</strong> — Intelligence jargon has no place in an operational brief. Speak clearly.</li>
+<li><strong>Acknowledge Uncertainty</strong> — Never present assessments as certainty when they are not. 'We assess with moderate confidence...'</li>
+<li><strong>Prepare for Questions</strong> — Commanders will push back. Know the sourcing, know the gaps, stand by your assessment.</li>
+</ul>
+<div class="warning-box">
+<div class="warning-box-title">⚠ BRIEFER'S INTEGRITY</div>
+<p>Never soften an intelligence assessment to please a commander's preferred course of action. Telling commanders what they want to hear rather than what the intelligence says is one of the most dangerous intelligence failures possible.</p>
+</div>
+</div>
+<div class="content-section">
+<h2 class="content-h2">After-Action Intelligence Review</h2>
+<p class="content-p">Following every operation, intelligence gathered during the operation must be systematically captured and fed back into the intelligence cycle. Arrested persons provide HUMINT opportunities. Seized devices provide digital intelligence. Observed TTPs (Tactics, Techniques, Procedures) update threat assessments. The operation is never just an end — it is also a collection event.</p>
+</div>`,
+  questions:[
+    {q:"All-source intelligence fusion refers to:", opts:["Collecting intelligence from all geographic sources","Integrating intelligence from multiple disciplines (HUMINT, SIGINT, OSINT, IMINT) into a coherent assessment","Sharing all collected intelligence with all agencies","Combining all intelligence departments into one office"], exp:"All-source fusion integrates intelligence from every available discipline into a single, coherent picture — each discipline providing pieces that together form a more complete and reliable assessment."},
+    {q:"The 'Bottom Line Up Front' (BLUF) principle requires:", opts:["Writing executive summaries at the bottom of reports","Leading the brief with the key intelligence finding before building to supporting detail","Briefing only bottom-level threats first","Always beginning with an apology for insufficient intelligence"], exp:"BLUF means leading with the most important finding immediately — decision-makers need the key conclusion first, not after a lengthy analytical build-up they may not have time for."},
+    {q:"When should intelligence officers soften assessments to align with a commander's preferred course of action?", opts:["When the commander outranks the intelligence officer","Never — this is one of the most dangerous intelligence failures","When there is insufficient evidence to support the assessment","When time is critically short before an operation"], exp:"NEVER. Softening or adjusting intelligence to match a commander's preferences is called 'intelligence to please' — it is among the most catastrophic intelligence failures, potentially leading operations to disaster."},
+    {q:"After-action intelligence review ensures:", opts:["Officers receive appropriate commendations for successful operations","Intelligence collected during operations feeds back into the intelligence cycle","Operations are reviewed for tactical efficiency only","Administrative requirements are satisfied"], exp:"Every operation is simultaneously a collection event — seized material, arrested persons, and observed enemy TTPs all generate new intelligence that must be captured and fed back into the cycle."},
+    {q:"Key Intelligence Gaps in a brief identify:", opts:["Physical gaps in surveillance coverage","What the analyst does not know that decision-makers need to know","Administrative gaps in reporting systems","Gaps in the organization's intelligence training"], exp:"Key Intelligence Gaps (KIGs) identify the critical unknowns — what we need to know but currently don't — which should drive the next collection cycle."},
+    {q:"Intelligence-to-Operations handover requires intelligence officers to:", opts:["Submit written reports only and await commander decisions","Directly brief operational commanders on confidence levels and sourcing","Transfer all files to the operations section and have no further involvement","Brief only at the conclusion of operations"], exp:"Intelligence officers must brief commanders directly — explaining sourcing, confidence levels, and gaps — so commanders can make informed operational decisions rather than simply receiving written reports."},
+    {q:"Acknowledging uncertainty in intelligence briefings means:", opts:["Refusing to brief until certainty is achieved","Using precise language: 'We assess with moderate confidence...' rather than presenting guesses as facts","Listing all possible alternative explanations in detail","Omitting uncertain assessments from briefs entirely"], exp:"Precise uncertainty language — HIGH/MODERATE/LOW CONFIDENCE — tells commanders exactly how reliable the assessment is and allows proportionate operational responses. Never present uncertainties as facts."},
+    {q:"Operations must be designed to:", opts:["Consume existing intelligence as efficiently as possible","Both execute on existing intelligence AND collect additional intelligence about the adversary","Avoid any activity that could reveal intelligence capabilities","Operate independently from the intelligence cycle"], exp:"Well-designed operations exploit existing intelligence for immediate effect while simultaneously collecting new intelligence about adversary TTPs, capabilities, and networks for future cycles."},
+    {q:"TTPs (Tactics, Techniques, and Procedures) observed during operations are valuable because:", opts:["They satisfy post-operational reporting requirements","They update threat assessments and improve future intelligence products and operational planning","They can be used to evaluate officer performance","They provide evidence for prosecution exclusively"], exp:"Adversary TTPs observed during operations — how they communicate, move, react, and employ methods — are valuable intelligence that directly improves future threat assessments and operational counter-strategies."},
+    {q:"The Dissemination Plan component of an intelligence brief ensures:", opts:["The brief is formatted for maximum visual impact","The right intelligence reaches the right people beyond the immediate briefing audience","All intelligence is automatically shared with all departments","Only the briefer determines what intelligence is classified"], exp:"The Dissemination Plan identifies all individuals and organizations who need the intelligence — beyond the immediate audience — and determines how it will be securely transmitted to them."}
+  ]
+}
+];
+
+// ================================================================
+// FINAL EXAM — 30 questions drawn from all modules
+// ================================================================
+const FINAL_EXAM_QUESTIONS = [
+  {q:"Intelligence differs from information primarily because intelligence is:", opts:["More voluminous","Analyzed, verified, and actionable","Older and more verified","Only collected by government agencies"], exp:"Intelligence is the product of analysis, verification, and interpretation — it is actionable knowledge that drives decisions, not merely collected data or information."},
+  {q:"Which phase of the Intelligence Cycle converts raw collection into analyzable form?", opts:["Planning","Collection","Processing","Analysis"], exp:"The Processing phase converts raw collected material — through translation, decryption, imagery enhancement — into a form ready for analysis."},
+  {q:"A source motivated by ideology is typically:", opts:["The most financially rewarding","The least reliable because they can be emotionally unstable","Potentially the most reliable if the ideology is genuine","The easiest to control"], exp:"Ideology-motivated sources act from genuine belief — when sincere, they can be highly reliable and committed. However, the sincerity must be carefully verified."},
+  {q:"In the Admiralty system, 'C3' means:", opts:["Completely reliable, confirmed information","Fairly reliable source, possibly true information","Unreliable source, doubtful information","Source cannot be assessed, truth cannot be assessed"], exp:"C = Fairly Reliable source; 3 = Information Possibly True. The letter and number are assessed independently."},
+  {q:"Section 69 of the IT Act, 2000 governs:", opts:["Physical surveillance operations","Digital interception, monitoring and decryption authorization","Social media regulation","Cybercrime prosecution"], exp:"Section 69 of the IT Act empowers the government to direct interception, monitoring, or decryption of information through computer resources for national security purposes."},
+  {q:"The ABC position system in mobile surveillance is designed to:", opts:["Record the surveillance route in sequence","Rotate operatives to prevent the subject identifying a fixed follower","Assign commanders to positions by rank","Divide the surveillance area into zones"], exp:"Rotating between ABC positions prevents any single operative from remaining in the same relative position too long, reducing identification risk."},
+  {q:"Warning Intelligence is characterized by:", opts:["Long-term strategic assessment","Summarizing past events","Alerting decision-makers to imminent threats — the most time-critical product","Analyzing the political intentions of foreign governments"], exp:"Warning Intelligence is the most time-critical product — designed to alert decision-makers to threats requiring immediate action before they materialize."},
+  {q:"PERSEC in counterintelligence covers:", opts:["Physical security of intelligence facilities","Vetting, background checks, and ongoing monitoring of personnel with sensitive access","Personal communications security for officers","Perimeter security of safe houses"], exp:"PERSEC (Personnel Security) involves comprehensive vetting of people given access to sensitive information, plus ongoing monitoring for compromise indicators."},
+  {q:"The K.S. Puttaswamy judgment (2017) is significant for intelligence operations because:", opts:["It authorized expanded surveillance powers for intelligence agencies","It declared the Right to Privacy a fundamental right, requiring all surveillance to meet constitutional standards","It classified all intelligence activities as state secrets","It established the National Intelligence Grid"], exp:"Puttaswamy established Right to Privacy as a fundamental right under Article 21 — all intelligence surveillance activities must now withstand constitutional scrutiny for legality, necessity, and proportionality."},
+  {q:"'Bottom Line Up Front' (BLUF) in intelligence briefing means:", opts:["Briefing from the lowest classification level upward","Presenting the key intelligence finding immediately at the start of the brief","Providing background context before reaching conclusions","Briefing junior officers before senior commanders"], exp:"BLUF means leading with the critical finding — decision-makers need the most important conclusion immediately, not after lengthy analytical buildup."},
+  {q:"A tower dump provides:", opts:["CDR for one specific number","Records of all devices connecting to a cell tower in a defined timeframe","Physical location of all active phones in an area","Content of all messages sent in an area"], exp:"A tower dump provides connection records of ALL mobile devices that accessed a specific cell tower during a specified time period — used to place suspects at crime scene locations."},
+  {q:"Confirmation bias in analysis leads analysts to:", opts:["Seek additional confirmation from more sources","Overweight evidence supporting existing beliefs while discounting contrary evidence","Confirm intelligence with field operatives before reporting","Always confirm reports through official channels"], exp:"Confirmation bias causes analysts to unconsciously favour information that confirms their existing hypothesis — a major analytical failure that produces wrong assessments."},
+  {q:"The THREAT EQUATION is:", opts:["Threat = Intent + Resources","Threat = Capability × Intention","Threat = Vulnerability + Access","Threat = Risk × Probability"], exp:"Threat = Capability × Intention. Both elements must be present — a capable adversary without identified intention is not an immediate threat; intention without capability is not an operational threat."},
+  {q:"All-source intelligence fusion is valuable because:", opts:["It eliminates the need for HUMINT operations","Each discipline's intelligence, combined with others, produces a more complete and reliable picture","It reduces analytical workload by consolidating sources","It is required by law for all assessments"], exp:"Multi-source fusion produces assessments stronger than any single discipline — corroboration across HUMINT, SIGINT, and OSINT dramatically increases analytical confidence."},
+  {q:"An operator ordered to conduct an operation they believe is unlawful should:", opts:["Comply and report concerns after the operation","Refuse publicly and contact the media","Immediately raise concerns in writing through proper internal channels","Seek legal advice from a private attorney before acting"], exp:"The immediate, documented response through proper channels protects the officer legally, creates an official record, and is the correct ethical and procedural course of action."},
+  {q:"EXIF metadata in photographs can reveal:", opts:["The photographer's criminal record","GPS location, device type, and date/time of capture","The content of nearby communications","The identity of persons in the photograph"], exp:"EXIF data embedded in digital photographs contains GPS coordinates, camera/device information, date, and time — powerful OSINT data for geolocation of subjects."},
+  {q:"Non-Official Cover (NOC) means:", opts:["The officer operates without any cover identity","The officer operates as a private civilian — government provides no acknowledgment if burned","An officer operating in a non-official capacity during leave","An officer working in a civilian ministry on secondment"], exp:"NOC officers are completely backstopped as private civilians. If identified, the government will not acknowledge them — maximum personal risk, maximum operational value."},
+  {q:"The Official Secrets Act, 1923 primarily covers:", opts:["Authorizing intelligence collection operations","Criminalizing unauthorized disclosure of classified government information","Regulating the recruitment of intelligence personnel","Classifying intelligence products"], exp:"The OSA prohibits unauthorized disclosure of classified government information — intelligence officers handling classified material are bound by its provisions."},
+  {q:"Source debriefing should occur immediately after contact because:", opts:["The handler needs time to prepare questions before the meeting","The source may contact the adversary if not debriefed quickly","Human memory degrades rapidly and details are lost","Departmental regulations require immediate reporting"], exp:"Memory fades rapidly — details that seem unforgettable in the moment are lost within hours. Immediate debriefing captures the maximum intelligence value from the source's experience."},
+  {q:"A Spot Report (SPOTREP) is distinguished by:", opts:["Its comprehensive analytical content","Its immediate, brief reporting of time-sensitive observations","Its classified TOP SECRET marking","Its detailed source attribution"], exp:"A SPOTREP is the first, immediate field report — brief, factual, and time-critical. Analytical detail comes later in assessments; the SPOTREP's value is speed."},
+  {q:"'Legality' as an intelligence principle means:", opts:["Operations must be legal in the target country","All intelligence activities must have a basis in statute or authorized direction — 'useful' is not justification","Intelligence produced must be legally admissible in court","Only lawyers may authorize intelligence operations"], exp:"Legality requires a formal legal basis for every intelligence activity — statutory authority, a lawful order, or authorized direction. Operational utility alone does not justify an intelligence activity."},
+  {q:"What distinguishes tactical intelligence from strategic intelligence?", opts:["Tactical intelligence involves more collectors","Tactical intelligence is short-term and supports immediate operations; strategic is long-term and national-level","Tactical intelligence requires higher classification","Tactical intelligence is only collected domestically"], exp:"Tactical intelligence addresses immediate, specific operational needs; strategic intelligence informs national-level policy and planning over the long term."},
+  {q:"A source graded 'E5' should be:", opts:["Treated as the highest priority for collection","Discarded unless independently corroborated — unreliable source, improbable information","Promoted to a higher access position","Given financial incentives to improve reporting"], exp:"E5 = Unreliable source, Improbable information — the lowest rating in the Admiralty system. Such intelligence should not be acted upon without independent corroboration from reliable sources."},
+  {q:"Pattern analysis in intelligence identifies:", opts:["Patterns in classified document formatting","Recurring behavioral and operational patterns of targets that can be exploited or predict future activity","Physical patterns in fingerprint databases","Communication network infrastructure patterns"], exp:"Pattern analysis reveals predictable behaviors, operational rhythms, and routines — when a subject always travels on Thursday, communicates on the same app, or uses the same route."},
+  {q:"The OPSEC process protects primarily:", opts:["Classified intelligence documents","Unclassified information that adversaries could exploit to harm operations","Operator personal data from departmental records","Communications infrastructure"], exp:"OPSEC focuses on protecting unclassified information — observable patterns and behaviors that adversaries can exploit without needing to intercept classified communications."},
+  {q:"CDR (Call Detail Records) are obtained through:", opts:["Direct access to the suspect's mobile device","A lawful production order served on the telecommunications provider","Request through the suspect's carrier without legal process","Commercial data brokers and credit agencies"], exp:"CDRs require a lawful production order served on the telecom provider — the process cannot be circumvented, and unauthorized acquisition is a criminal offence."},
+  {q:"Which structured analytical technique tests multiple explanations against available evidence?", opts:["Timeline Analysis","Pattern Analysis","Analysis of Competing Hypotheses (ACH)","Link Analysis"], exp:"ACH (Analysis of Competing Hypotheses) systematically evaluates all plausible explanations against the evidence, reducing confirmation bias and improving analytical accuracy."},
+  {q:"Intelligence dissemination should follow which principle?", opts:["Share with all departments for maximum awareness","Share only with those who have clearance AND a legitimate need-to-know","Share inversely to classification — lowest classified = widest distribution","Share only with the senior most officer"], exp:"Dissemination requires both appropriate clearance AND need-to-know. Sharing beyond necessity compromises sources, methods, and ongoing operations."},
+  {q:"After an operation, intelligence collected during execution should:", opts:["Be destroyed to maintain operational security","Be fed back into the intelligence cycle as new collection","Be classified at the highest level and archived only","Be shared only with the participating operational team"], exp:"Post-operation intelligence — from seized devices, arrested persons, and observed TTPs — must feed back into the intelligence cycle to improve future assessments and collection."},
+  {q:"The principle of individual threat, not collective suspicion means:", opts:["One individual at a time may be investigated under intelligence law","Communities must not be treated as suspect based on the actions of individuals within them — focus on specific threat indicators","Individual threats are always more dangerous than collective ones","Each intelligence officer is individually responsible for their assessment"], exp:"Treating entire communities as threats based on individual actions is both ethically wrong and operationally counterproductive — it damages community trust and destroys the intelligence flow that communities themselves provide."}
+];
+
+// ================================================================
+// STATE MANAGEMENT
+// ================================================================
+const state = {
+  moduleScores: JSON.parse(localStorage.getItem('bti_scores') || '{}'),
+  modulesPassed: JSON.parse(localStorage.getItem('bti_passed') || '{}'),
+  finalPassed: JSON.parse(localStorage.getItem('bti_final') || 'false'),
+  certName: '', certDesignation: '', certUnit: '',
+  currentModuleId: null,
+  currentAnswers: {},
+  currentSubmitted: false
+};
+
+function saveState() {
+  localStorage.setItem('bti_scores', JSON.stringify(state.moduleScores));
+  localStorage.setItem('bti_passed', JSON.stringify(state.modulesPassed));
+  localStorage.setItem('bti_final', JSON.stringify(state.finalPassed));
+}
+
+// ================================================================
+// GENERATE MODULE CARDS
+// ================================================================
+function renderModuleGrid() {
+  const grid = document.getElementById('moduleGrid');
+  const list = document.getElementById('progressList');
+  grid.innerHTML = '';
+  list.innerHTML = '';
+
+  MODULES.forEach((mod, idx) => {
+    const passed = state.modulesPassed[mod.id];
+    const score = state.moduleScores[mod.id];
+
+    const card = document.createElement('div');
+    card.className = `module-card ${passed ? 'completed' : ''}`;
+    card.innerHTML = `
+      <div class="module-num">0${mod.id < 10 ? '0'+mod.id : mod.id}</div>
+      <div class="module-name">${mod.title}</div>
+      <div class="module-desc">${mod.desc}</div>
+      <div class="module-meta">
+        <span class="module-time">${mod.time}</span>
+        <span class="module-status ${passed ? 'status-done' : 'status-pending'}">
+          ${passed ? '✓ PASSED' : score !== undefined ? `SCORE: ${score}%` : 'PENDING'}
+        </span>
+      </div>
+    `;
+    card.onclick = () => openModule(mod.id);
+    grid.appendChild(card);
+
+    // Progress row
+    const row = document.createElement('div');
+    row.className = 'progress-module-row';
+    row.innerHTML = `
+      <div class="pm-num">0${mod.id < 10 ? '0'+mod.id : mod.id}</div>
+      <div class="pm-name">${mod.title}</div>
+      <div class="pm-bar"><div class="pm-bar-fill" id="pbar-${mod.id}" style="width:${passed ? 100 : score || 0}%"></div></div>
+      <div class="pm-score">${score !== undefined ? score+'%' : '—'}</div>
+    `;
+    list.appendChild(row);
+  });
+
+  updateOverallProgress();
+}
+
+function updateOverallProgress() {
+  const passedCount = Object.values(state.modulesPassed).filter(v=>v).length;
+  const pct = Math.round((passedCount / MODULES.length) * 100);
+  document.getElementById('overallPct').textContent = pct;
+  document.getElementById('headerProgressFill').style.width = pct + '%';
+
+  const allPassed = passedCount === MODULES.length;
+  const finalBtn = document.getElementById('finalExamBtn');
+  const finalStatus = document.getElementById('finalExamStatus');
+
+  if (allPassed) {
+    finalBtn.disabled = false;
+    finalStatus.textContent = 'ALL MODULES PASSED — FINAL EXAMINATION UNLOCKED';
+    finalStatus.style.color = 'var(--bright)';
+  }
+
+  if (state.finalPassed) {
+    document.getElementById('certForm').classList.add('active');
+  }
+}
+
+// ================================================================
+// OPEN MODULE
+// ================================================================
+function openModule(id) {
+  const mod = MODULES.find(m => m.id === id);
+  state.currentModuleId = id;
+  state.currentAnswers = {};
+  state.currentSubmitted = false;
+
+  document.getElementById('modalCode').textContent = `MODULE ${String(id).padStart(2,'0')} / ${String(MODULES.length).padStart(2,'0')}`;
+  document.getElementById('modalTitle').textContent = mod.title;
+  document.getElementById('moduleModal').classList.add('open');
+
+  buildModalBody(mod);
+}
+
+function buildModalBody(mod) {
+  const body = document.getElementById('modalBody');
+
+  const alreadyPassed = state.modulesPassed[mod.id];
+  const prevScore = state.moduleScores[mod.id];
+
+  let quizHtml = `
+    <div class="quiz-section">
+      <div class="quiz-header">
+        <div class="quiz-title">MODULE ASSESSMENT</div>
+        <div class="quiz-score-display">PASSING SCORE: 80% | ${mod.questions.length} QUESTIONS</div>
+      </div>
+      ${alreadyPassed ? `<div class="intel-box" style="margin-bottom:16px;"><div class="intel-box-title">✓ MODULE PASSED — SCORE: ${prevScore}%</div><p>You may retake this assessment. Your highest score is recorded.</p></div>` : ''}
+  `;
+
+  mod.questions.forEach((q, qi) => {
+    quizHtml += `
+      <div class="question-block" id="qblock-${qi}">
+        <div class="question-num">QUESTION ${qi+1} OF ${mod.questions.length}</div>
+        <div class="question-text">${q.q}</div>
+        <div class="options-grid">
+          ${q.opts.map((opt, oi) => `
+            <button class="option-btn" id="opt-${qi}-${oi}" onclick="selectAnswer(${qi},${oi})">
+              <span class="option-letter">${['A','B','C','D'][oi]}</span>
+              ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div class="explanation-box" id="exp-${qi}">${q.exp}</div>
+      </div>
+    `;
+  });
+
+  quizHtml += `
+    <button class="quiz-submit-btn" id="quizSubmitBtn" onclick="submitQuiz(${mod.id})">SUBMIT ASSESSMENT</button>
+    <div class="quiz-result-box" id="quizResultBox"></div>
+    </div>
+  `;
+
+  body.innerHTML = mod.content + quizHtml;
+}
+
+function selectAnswer(qi, oi) {
+  if (state.currentSubmitted) return;
+  state.currentAnswers[qi] = oi;
+
+  // Only clear selections for THIS question, not all questions
+  [0,1,2,3].forEach(j => {
+    const btn = document.getElementById(`opt-${qi}-${j}`);
+    if (btn) btn.classList.remove('selected');
+  });
+
+  const btn = document.getElementById(`opt-${qi}-${oi}`);
+  if (btn) btn.classList.add('selected');
+
+  // Update submit button with answered count
+  const mod = MODULES.find(m => m.id === state.currentModuleId);
+  const answered = Object.keys(state.currentAnswers).length;
+  const total = mod.questions.length;
+  const submitBtn = document.getElementById('quizSubmitBtn');
+  if (submitBtn) {
+    submitBtn.textContent = answered < total
+      ? `ANSWERED ${answered}/${total} — SUBMIT ASSESSMENT`
+      : 'SUBMIT ASSESSMENT';
+  }
+}
+
+function submitQuiz(modId) {
+  const mod = MODULES.find(m => m.id === modId);
+  if (Object.keys(state.currentAnswers).length < mod.questions.length) {
+    alert('Please answer all questions before submitting.');
+    return;
+  }
+
+  state.currentSubmitted = true;
+  document.getElementById('quizSubmitBtn').style.display = 'none';
+
+  const _mAns = _getModAns(modId - 1);
+  let correct = 0;
+  mod.questions.forEach((q, qi) => {
+    const chosen = state.currentAnswers[qi];
+    const ca = _mAns[qi];
+    const isCorrect = chosen === ca;
+    if (isCorrect) correct++;
+
+    q.opts.forEach((_, oi) => {
+      const btn = document.getElementById(`opt-${qi}-${oi}`);
+      if (!btn) return;
+      btn.disabled = true;
+      btn.classList.remove('selected');
+      if (oi === ca) btn.classList.add('correct');
+      else if (oi === chosen && !isCorrect) btn.classList.add('wrong');
+    });
+
+    const exp = document.getElementById(`exp-${qi}`);
+    if (exp) exp.style.display = 'block';
+  });
+
+  const score = Math.round((correct / mod.questions.length) * 100);
+  const passed = score >= 80;
+
+  if (!state.moduleScores[modId] || score > state.moduleScores[modId]) {
+    state.moduleScores[modId] = score;
+  }
+  if (passed) state.modulesPassed[modId] = true;
+  saveState();
+
+  const resultBox = document.getElementById('quizResultBox');
+  resultBox.style.display = 'block';
+  resultBox.innerHTML = `
+    <div class="result-score-big ${passed?'pass':'fail'}">${score}%</div>
+    <div class="result-label ${passed?'pass':'fail'}">${passed ? '✓ ASSESSMENT PASSED' : '✗ ASSESSMENT FAILED'}</div>
+    <div class="result-message">
+      ${passed 
+        ? `Outstanding. You answered ${correct} of ${mod.questions.length} questions correctly. This module is now marked complete.`
+        : `You answered ${correct} of ${mod.questions.length} questions correctly. Score required to pass: 80%. Review the module content and retake the assessment.`
+      }
+    </div>
+    <div class="result-actions">
+      <button class="btn-primary" onclick="closeModal()">CLOSE MODULE</button>
+      ${!passed ? `<button class="btn-secondary" onclick="openModule(${modId})">RETAKE ASSESSMENT</button>` : ''}
+    </div>
+  `;
+
+  renderModuleGrid();
+}
+
+function closeModal() {
+  document.getElementById('moduleModal').classList.remove('open');
+  state.currentModuleId = null;
+}
+
+// ================================================================
+// FINAL EXAM
+// ================================================================
+function openFinalExam() {
+  state.finalAnswers = {};
+  state.finalSubmitted = false;
+  document.getElementById('finalModal').classList.add('open');
+  buildFinalExam();
+}
+
+function buildFinalExam() {
+  const body = document.getElementById('finalModalBody');
+  let html = `
+    <div style="margin-bottom:24px;">
+      <div class="intel-box">
+        <div class="intel-box-title">◆ FINAL CERTIFICATION EXAMINATION</div>
+        <p>30 questions covering all 14 modules. Passing score: 80% (24/30). This examination must be completed in one session. Good luck, Operator.</p>
+      </div>
+    </div>
+  `;
+
+  FINAL_EXAM_QUESTIONS.forEach((q, qi) => {
+    html += `
+      <div class="question-block" id="fqblock-${qi}">
+        <div class="question-num">FINAL EXAM — QUESTION ${qi+1} OF ${FINAL_EXAM_QUESTIONS.length}</div>
+        <div class="question-text">${q.q}</div>
+        <div class="options-grid">
+          ${q.opts.map((opt, oi) => `
+            <button class="option-btn" id="fopt-${qi}-${oi}" onclick="selectFinalAnswer(${qi},${oi})">
+              <span class="option-letter">${['A','B','C','D'][oi]}</span>
+              ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div class="explanation-box" id="fexp-${qi}">${q.exp}</div>
+      </div>
+    `;
+  });
+
+  html += `
+    <button class="quiz-submit-btn" id="finalSubmitBtn" onclick="submitFinalExam()">SUBMIT FINAL EXAMINATION</button>
+    <div class="quiz-result-box" id="finalResultBox"></div>
+  `;
+
+  body.innerHTML = html;
+}
+
+function selectFinalAnswer(qi, oi) {
+  if (state.finalSubmitted) return;
+  state.finalAnswers[qi] = oi;
+
+  // Only clear selections for THIS question, not all questions
+  [0,1,2,3].forEach(j => {
+    const b = document.getElementById(`fopt-${qi}-${j}`);
+    if (b) b.classList.remove('selected');
+  });
+
+  const btn = document.getElementById(`fopt-${qi}-${oi}`);
+  if (btn) btn.classList.add('selected');
+
+  // Update submit button with answered count
+  const answered = Object.keys(state.finalAnswers).length;
+  const total = FINAL_EXAM_QUESTIONS.length;
+  const submitBtn = document.getElementById('finalSubmitBtn');
+  if (submitBtn) {
+    submitBtn.textContent = answered < total
+      ? `ANSWERED ${answered}/${total} — SUBMIT FINAL EXAMINATION`
+      : 'SUBMIT FINAL EXAMINATION';
+  }
+}
+
+function submitFinalExam() {
+  if (Object.keys(state.finalAnswers).length < FINAL_EXAM_QUESTIONS.length) {
+    alert('Please answer all 30 questions before submitting.');
+    return;
+  }
+
+  state.finalSubmitted = true;
+  document.getElementById('finalSubmitBtn').style.display = 'none';
+
+  const _fAns = _getFinalAns();
+  let correct = 0;
+  FINAL_EXAM_QUESTIONS.forEach((q, qi) => {
+    const chosen = state.finalAnswers[qi];
+    const ca = _fAns[qi];
+    const isCorrect = chosen === ca;
+    if (isCorrect) correct++;
+
+    q.opts.forEach((_, oi) => {
+      const btn = document.getElementById(`fopt-${qi}-${oi}`);
+      if (!btn) return;
+      btn.disabled = true;
+      btn.classList.remove('selected');
+      if (oi === ca) btn.classList.add('correct');
+      else if (oi === chosen && !isCorrect) btn.classList.add('wrong');
+    });
+
+    const exp = document.getElementById(`fexp-${qi}`);
+    if (exp) exp.style.display = 'block';
+  });
+
+  const score = Math.round((correct / FINAL_EXAM_QUESTIONS.length) * 100);
+  const passed = score >= 80;
+
+  if (passed) {
+    state.finalPassed = true;
+    state.passTimestamp = new Date().toISOString(); // store ISO for reliable later formatting
+    saveState();
+  }
+
+  const resultBox = document.getElementById('finalResultBox');
+  resultBox.style.display = 'block';
+  resultBox.innerHTML = `
+    <div class="result-score-big ${passed?'pass':'fail'}">${score}%</div>
+    <div class="result-label ${passed?'pass':'fail'}">${passed ? '✓ FINAL EXAMINATION PASSED' : '✗ FINAL EXAMINATION FAILED'}</div>
+    <div class="result-message">
+      ${passed 
+        ? `Exceptional performance. ${correct}/30 correct. You are hereby certified as a Bravo Tactical India Intelligence Operator. Proceed to the Certificate section to generate your official certificate.`
+        : `${correct}/30 correct. Required: 24/30 (80%). Review your module materials and attempt the final examination again.`
+      }
+    </div>
+    <div class="result-actions">
+      ${passed 
+        ? `<button class="btn-primary" onclick="closeFinalModal(); document.getElementById('certSection').scrollIntoView({behavior:'smooth'})">PROCEED TO CERTIFICATE</button>`
+        : `<button class="btn-secondary" onclick="closeFinalModal()">REVIEW MODULES</button>
+           <button class="btn-primary" onclick="openFinalExam()" style="margin-left:12px;">RETAKE EXAM</button>`
+      }
+    </div>
+  `;
+
+  if (passed) {
+    document.getElementById('certForm').classList.add('active');
+    updateOverallProgress();
+  }
+}
+
+function closeFinalModal() {
+  document.getElementById('finalModal').classList.remove('open');
+}
+
+// ================================================================
+// CERTIFICATE GENERATION
+// ================================================================
+function generateCertificate() {
+  const name = document.getElementById('certName').value.trim();
+  const designation = document.getElementById('certDesignation').value.trim();
+  const unit = document.getElementById('certUnit').value.trim();
+
+  if (!name || !designation || !unit) {
+    alert('Please fill in all fields before generating your certificate.');
+    return;
+  }
+
+  const certId = generateCertId(name);
+
+  // Use stored pass timestamp if available, otherwise now
+  const passDate = state.passTimestamp ? new Date(state.passTimestamp) : new Date();
+
+  const dateStr = passDate.toLocaleDateString('en-IN', {
+    day: '2-digit', month: 'long', year: 'numeric'
+  });
+  const timeStr = passDate.toLocaleTimeString('en-IN', {
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: true, timeZoneName: 'short'
+  });
+
+  document.getElementById('certDisplayName').textContent        = name.toUpperCase();
+  document.getElementById('certDisplayDesignation').textContent = designation.toUpperCase();
+  document.getElementById('certDisplayUnit').textContent        = '[ ' + unit.toUpperCase() + ' ]';
+  document.getElementById('certDisplayId').textContent          = certId;
+  document.getElementById('certDisplayDate').textContent        = dateStr;
+  document.getElementById('certDisplayTime').textContent        = timeStr;
+
+  document.getElementById('certForm').style.display = 'none';
+  document.getElementById('certificateWrapper').classList.add('show');
+}
+
+// ── CERT ID GENERATION & VERIFICATION ─────────────────────────────────────
+// Secret used to generate verifiable checksum (obfuscated, not real crypto)
+const _vs = [66,84,73,95,83,73,71,95,50,48,50,53,95,65,85,84,72];
+function _getSecret(){ return _vs.map(c=>String.fromCharCode(c)).join(''); }
+
+function _computeCheck(n4, ts) {
+  const inp = n4 + ts + _getSecret();
+  let h = 0x12345678;
+  for (let i=0; i<inp.length; i++){
+    h = Math.imul(h ^ inp.charCodeAt(i), 0x9e3779b9);
+    h = (h << 13) | (h >>> 19);
+  }
+  h = Math.abs(h >>> 0);
+  const ch = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let r = '';
+  for (let i=0; i<6; i++){ r += ch[h % ch.length]; h = Math.floor(h/ch.length); }
+  return r;
+}
+
+function generateCertId(name) {
+  const n4 = name.replace(/\s/g,'').substring(0,4).toUpperCase().padEnd(4,'X');
+  const ts  = Date.now().toString(36).toUpperCase().slice(-6);
+  return `BTI-${n4}-${ts}-${_computeCheck(n4, ts)}`;
+}
+
+function verifyCert() {
+  const raw = document.getElementById('verifyInput').value.trim().toUpperCase();
+  const box = document.getElementById('verifyResult');
+  box.style.display = 'block';
+
+  const parts = raw.split('-');
+  if (parts.length !== 4 || parts[0] !== 'BTI') {
+    box.className = 'verify-result fail';
+    box.innerHTML = '✗ INVALID FORMAT<br><br>Expected format: BTI-XXXX-XXXXXX-XXXXXX<br>Please check the ID on the certificate and try again.';
+    return;
+  }
+  const [, n4, ts, chk] = parts;
+  if (n4.length !== 4 || ts.length !== 6 || chk.length !== 6) {
+    box.className = 'verify-result fail';
+    box.innerHTML = '✗ INVALID SEGMENT LENGTH<br><br>Each segment must be exactly: BTI-4-6-6 characters.';
+    return;
+  }
+  const expected = _computeCheck(n4, ts);
+  if (expected !== chk) {
+    box.className = 'verify-result fail';
+    box.innerHTML = '✗ CERTIFICATE NOT VERIFIED<br><br>This ID is not a valid Bravo Tactical India certification.<br>The authentication code does not match. This certificate may be forged or incorrectly transcribed.';
+    return;
+  }
+  // Decode timestamp to approximate issue date
+  const tsNum = parseInt(ts, 36);
+  // ts is last 6 base36 digits of Date.now() (milliseconds)
+  // reconstruct: we know it's within last few years, find the right epoch block
+  const nowMs = Date.now();
+  const base36Max = Math.pow(36,6); // 2176782336
+  let ms = tsNum;
+  // Add enough multiples of base36Max to land within a valid timeframe
+  const base = Math.floor(nowMs / base36Max) * base36Max;
+  // try current block, then previous
+  let candidates = [base + tsNum, base - base36Max + tsNum];
+  let issueDate = null;
+  for (let c of candidates) {
+    if (c > 0 && c <= nowMs + 60000) { issueDate = new Date(c); break; }
+  }
+  const dateStr = issueDate
+    ? issueDate.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'})
+    : 'Date not recoverable';
+
+  box.className = 'verify-result pass';
+  box.innerHTML = `✓ CERTIFICATE VERIFIED — AUTHENTIC<br>
+<br>
+<strong>CERTIFICATION ID</strong> &nbsp;${raw}<br>
+<strong>OPERATOR INITIALS</strong> &nbsp;${n4}<br>
+<strong>ISSUE DATE (APPROX)</strong> &nbsp;${dateStr}<br>
+<strong>ISSUING AUTHORITY</strong> &nbsp;BRAVO TACTICAL INDIA<br>
+<strong>PROGRAMME</strong> &nbsp;Intelligence Operator's Manual<br>
+<strong>AUTH CODE</strong> &nbsp;${chk} ✓ VALID<br>
+<br>
+This certificate was issued by Bravo Tactical India Field Intelligence Training Division upon successful completion of all 14 modules and Final Examination at ≥80%.`;
+}
+
+function printCertificate() {
+  window.print();
+}
+
+// make verifyCert available globally (already defined above)
+
+function scrollToModules() {
+  document.getElementById('modules').scrollIntoView({behavior:'smooth'});
+}
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  renderModuleGrid();
+
+  // Close modals on overlay click
+  document.getElementById('moduleModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.getElementById('finalModal').addEventListener('click', function(e) {
+    if (e.target === this) closeFinalModal();
+  });
+});
+</script>
+</body>
+</html>
